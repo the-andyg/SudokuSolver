@@ -47,7 +47,7 @@ public class SudokuSolver {
                         map.get(x).remove(itemOne);
                         solvedItems.add(itemOne);
                         numbersFound++;
-                        System.out.println("setBox: " + itemOne.row + ";" + itemOne.column);
+                        System.out.println("[setBoxNumber] setBox: " + itemOne.row + ";" + itemOne.column);
                         result = true;
                     }
                 }
