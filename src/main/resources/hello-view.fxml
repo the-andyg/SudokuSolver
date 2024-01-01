@@ -125,11 +125,11 @@
         </VBox>
     </center>
     <bottom>
-        <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <ButtonBar prefHeight="1000.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
             <buttons>
-                <Button onAction="#onHelloButtonClick" text="Bestätigen" />
-                <Label fx:id="welcomeText" />
-                <Button mnemonicParsing="false" text="Weiter" />
+                <Button onAction="#setGrid" text="Bestätigen" fx:id="setButton"/>
+                <Label fx:id="output" />
+                <Button onAction="#nextNumber" text="Weiter" />
             </buttons>
         </ButtonBar>
     </bottom>

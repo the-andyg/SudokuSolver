@@ -10,6 +10,12 @@ public class SudokuSolver {
     private final List<MapItem> solvedItems;
     private int numbersFound;
     private int numbersSearching;
+    private String outputText;
+
+    public String getOutputText() {
+        return outputText;
+    }
+
 
     public SudokuSolver(Grid grid) {
         this.grid = grid;
@@ -18,16 +24,20 @@ public class SudokuSolver {
         numbersFound = 0;
         numbersSearching = 0;
         createMap();
+        outputText = "";
     }
 
     public void nextNumber() {
         if (setDistinctNumber()) {
+            outputText = "set Distinct";
             return;
         }
         if(setBoxNumber()) {
+            outputText = "set Box Number";
             return;
         }
         setNextNumber();
+        outputText = "set Next Number";
     }
 
     public boolean isNotDone() {

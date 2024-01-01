@@ -262,6 +262,4 @@ public class TestSudokuSolver {
         System.out.println(count);
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
-
-
 }
