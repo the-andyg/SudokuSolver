@@ -4,20 +4,22 @@
 .grid-pane {
     -fx-padding: 10;
     -fx-grid-lines-visible: true; /* Optional: Zeigt Gitterlinien zwischen den Zellen an */
+
 }
 
 /* Styling für die Zellen */
 .text-field {
+    ;
     -fx-font-size: 18;
     -fx-alignment: center;
-    -fx-pref-width: 40;
-    -fx-pref-height: 40;
+    -fx-pref-width: 50;
+    -fx-pref-height: 50;
     -fx-border-color: #000;
     -fx-border-width: 1;
 }
 
 /* Optional: Styling für gefüllte Zellen (zum Beispiel für vordefinierte Zahlen im Sudoku) */
 .text-field:disabled {
-    -fx-background-color: #eee;
+    -fx-background-color: white;
     -fx-opacity: 1.0;
 }
