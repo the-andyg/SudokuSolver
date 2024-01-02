@@ -6,14 +6,20 @@ import java.util.List;
 public class Grid {
     private int[][] grid;
     private final int gridSize;
-
     private final boolean[][] startingSudoku;
+    private boolean solveAble;
+
 
     public Grid(int[][] grid, int gridSize) {
         this.grid = grid;
         this.gridSize = gridSize;
         startingSudoku = new boolean[gridSize][gridSize];
         setStartingSudoku();
+        checkInput();
+    }
+
+    public boolean isSolveAble() {
+        return solveAble;
     }
 
     private void setStartingSudoku() {
@@ -96,5 +102,20 @@ public class Grid {
             }
         }
         return result;
+    }
+
+    public void checkInput() {
+        for (int i = 0; i < gridSize; i++) {
+            for (int j = 0; j < gridSize; j++) {
+                int s = grid[i][j];
+                grid[i][j] = 0;
+                if (!checkNumberIsValid(s, i, j) && s != 0) {
+                    solveAble = false;
+                    return;
+                }
+                grid[i][j] = s;
+            }
+        }
+        solveAble = true;
     }
 }

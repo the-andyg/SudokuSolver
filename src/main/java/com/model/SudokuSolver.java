@@ -8,7 +8,6 @@ public class SudokuSolver {
     private final Grid grid;
     private final HashMap<Integer, List<MapItem>> map;
     private final List<MapItem> solvedItems;
-    private int numbersFound;
     private int numbersSearching;
     private String outputText;
     private boolean[][] newFields;
@@ -18,7 +17,6 @@ public class SudokuSolver {
         this.grid = grid;
         map = new HashMap<>();
         solvedItems = new ArrayList<>();
-        numbersFound = 0;
         numbersSearching = 0;
         createMap();
         outputText = "";
@@ -41,6 +39,7 @@ public class SudokuSolver {
     public void nextNumber() {
         if (!isNotDone()) {
             outputText = "Das Sudoku wurde erfolgreich gelöst";
+            return;
         }
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
@@ -56,7 +55,7 @@ public class SudokuSolver {
     }
 
     public boolean isNotDone() {
-        return !(numbersFound == numbersSearching);
+        return !(solvedItems.size() == numbersSearching);
     }
 
     private boolean setBoxNumber() {
@@ -72,7 +71,6 @@ public class SudokuSolver {
                         map.get(x).remove(item);
                         solvedItems.add(item);
                         newFields[item.row][item.column] = true;
-                        numbersFound++;
                         System.out.println("[setBoxNumber] setBox: " + item.row + ";" + item.column);
                         result = true;
                     }
@@ -133,8 +131,6 @@ public class SudokuSolver {
                 grid.setNumber(newNumber, item.row, item.column);
                 System.out.println("[SetDistinct] Eindeutige Zahl setzen: " + item.row + ";" + item.column + ":" + newNumber);
                 newFields[item.row][item.column] = true;
-                numbersFound++;
-
             }
             sortMap();
             return true;
@@ -159,7 +155,6 @@ public class SudokuSolver {
                 grid.setNumber(item.getNextNumber(), item.row, item.column);
                 solvedItems.add(item);
                 newFields[item.row][item.column] = true;
-                numbersFound++;
                 sortMap();
                 return;
             }
@@ -178,11 +173,10 @@ public class SudokuSolver {
             item.restorePossibleNumbers();
             map.get(item.getNumberOfPossibleNumbers()).add(item);
             removedFields[item.row][item.column] = true;
-            numbersFound--;
             if (solvedItems.isEmpty()) {
                 System.out.println("Sudoku nicht lösbar");
                 outputText = "Sudoku nicht lösbar";
-                numbersFound = numbersSearching;
+                numbersSearching = 0;
                 return;
             }
             item = solvedItems.get(solvedItems.size() - 1);

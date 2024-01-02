@@ -19,6 +19,7 @@ public class SudokuController implements Initializable {
     private final String INIT_TEXT = "Gebe das gewünschte Sudoku ein und bestätige es.";
     private final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten.";
     private final String FAIL_TEXT = "Die Eingabe war nicht korrekt.";
+    private final String NOT_SOLVE_ABLE = "Das eingegebene Sudoku ist nicht lösbar";
     @FXML
     public Label outputNormal;
     @FXML
@@ -82,6 +83,10 @@ public class SudokuController implements Initializable {
             return;
         }
         gridSudokuNormal = new Grid(sudoku, SIZE_NORMAL);
+        if (!gridSudokuNormal.isSolveAble()) {
+            outputNormal.setText(NOT_SOLVE_ABLE);
+            return;
+        }
         sudokuSolverNormal = new SudokuSolver(gridSudokuNormal);
         setButtonNormal.setDisable(true);
         updateGrid(gridNormal, sudokuSolverNormal, gridSudokuNormal, SIZE_NORMAL, true);
@@ -97,6 +102,10 @@ public class SudokuController implements Initializable {
             return;
         }
         gridSudokuHex = new Grid(sudoku, SIZE_HEX);
+        if (!gridSudokuHex.isSolveAble()) {
+            outputHex.setText(NOT_SOLVE_ABLE);
+            return;
+        }
         sudokuSolverHex = new SudokuSolver(gridSudokuHex);
         setButtonHex.setDisable(true);
         updateGrid(gridHex, sudokuSolverHex, gridSudokuHex, SIZE_HEX, true);

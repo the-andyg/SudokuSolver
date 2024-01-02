@@ -263,4 +263,31 @@ public class TestSudokuSolver {
         System.out.println(count);
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
+
+    @Test
+    public void testInvalid() {
+        int[][] sudokuForBacktracking = {
+                {1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+        Grid grid = new Grid(sudokuForBacktracking, 9);
+        SudokuSolver solver = new SudokuSolver(grid);
+        int count = 0;
+        while (solver.isNotDone()) {
+            solver.nextNumber();
+            count++;
+        }
+
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
+        System.out.println(count);
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
+    }
 }
