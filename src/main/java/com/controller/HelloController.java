@@ -12,13 +12,12 @@ import javafx.scene.layout.GridPane;
 public class HelloController {
     @FXML
     public Label output;
-    private SudokuSolver sudokuSolver;
     @FXML
     public Button setButton;
     @FXML
     public GridPane gridPane;
+    private SudokuSolver sudokuSolver;
     public Grid grid;
-
     private int size;
 
     @FXML
@@ -126,6 +125,4 @@ public class HelloController {
             column++;
         }
     }
-
-
 }

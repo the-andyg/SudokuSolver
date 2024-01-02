@@ -72,14 +72,9 @@ public class Grid {
 
     public List<Integer> getNewPossibleNumbers(List<Integer> numbers, int row, int column) {
         List<Integer> result = new ArrayList<>();
-//        for (int number : numbers) {
-//            if (checkNumberIsValid(number, row, column)) {
-//                result.add(number);
-//            }
-//        }
-        for (int i = 1; i <= gridSize; i++) {
-            if (checkNumberIsValid(i, row, column)) {
-                result.add(i);
+        for (int number : numbers) {
+            if (checkNumberIsValid(number, row, column)) {
+                result.add(number);
             }
         }
         return result;

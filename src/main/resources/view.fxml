@@ -12,8 +12,7 @@
     <center>
         <VBox alignment="CENTER" prefHeight="1000.0" prefWidth="1000.0" stylesheets="@styles.css"
               BorderPane.alignment="CENTER">
-            <GridPane alignment="CENTER" VBox.vgrow="NEVER" fx:id="gridPane">
-            </GridPane>
+            <GridPane alignment="CENTER" VBox.vgrow="NEVER" fx:id="gridPane"/>
             <Label fx:id="output"/>
         </VBox>
     </center>

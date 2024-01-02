@@ -12,7 +12,6 @@ public class SudokuSolver {
     private int numbersSearching;
     private String outputText;
     private boolean[][] newFields;
-
     private boolean[][] removedFields;
 
     public SudokuSolver(Grid grid) {
@@ -45,7 +44,7 @@ public class SudokuSolver {
             outputText = "set Distinct";
             return;
         }
-        if(setBoxNumber()) {
+        if (setBoxNumber()) {
             outputText = "set Box Number";
             return;
         }
@@ -162,6 +161,9 @@ public class SudokuSolver {
     }
 
     private void backTracking() {
+        for (MapItem m : solvedItems) {
+            System.out.println(m.row + ";" + m.column + ": " + m.getPossibleNumbers());
+        }
         MapItem item = solvedItems.get(solvedItems.size() - 1);
         while (item.possibleNumbersIsEmpty()) {
             System.out.println("[backTracking] eine zahl zurück gehen, weil keine weitere Möglichkeiten gefunden wurden");
@@ -192,7 +194,7 @@ public class SudokuSolver {
             if (!map.get(i).isEmpty()) {
                 for (int j = 0; j < map.get(i).size(); j++) {
                     item = map.get(i).get(j);
-                    item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getPossibleNumbers(), item.row, item.column));
+                    item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getAllPossibleNumbers(), item.row, item.column));
                     if (item.possibleNumbersIsEmpty()) {
                         System.out.println("[sortMap] ein feld ohne Möglichkeiten Backtracking starten" + item.row + ";" + item.column);
                         map.get(i).remove(item);
@@ -205,7 +207,7 @@ public class SudokuSolver {
                         map.get(i).remove(item);
                         j--;
                         map.get(item.getNumberOfPossibleNumbers()).add(item);
-                        //System.out.println("[sortMap] neu sortiert: " + item.row + ";" + item.column);
+                        System.out.println("[sortMap] neu sortiert: " + item.row + ";" + item.column);
                     }
                     if (item.getNumberOfPossibleNumbers() == 1) {
                         System.out.println("[sortMap] neues eindeutiges Feld gefunden");

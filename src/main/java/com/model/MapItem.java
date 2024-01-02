@@ -40,6 +40,10 @@ public class MapItem {
         return possibleNumbers;
     }
 
+    public List<Integer> getAllPossibleNumbers() {
+        return allPossibleNumbers;
+    }
+
     public int getNumberOfPossibleNumbers() {
         return possibleNumbers.size();
     }
