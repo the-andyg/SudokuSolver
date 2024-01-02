@@ -39,18 +39,20 @@ public class SudokuSolver {
     }
 
     public void nextNumber() {
+        if (!isNotDone()) {
+            outputText = "Das Sudoku wurde erfolgreich gelöst";
+        }
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         if (setDistinctNumber()) {
-            outputText = "set Distinct";
+            outputText = "Alle Felder gesetzt, die nur eine Möglichkeit hatten";
             return;
         }
         if (setBoxNumber()) {
-            outputText = "set Box Number";
+            outputText = "Alle Felder gesetzt, bei denen in der Reihe, der Zeile und in der Box nur dort die Zahl gesetzt werden konnte";
             return;
         }
-        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         setNextNumber();
-        outputText = "set Next Number";
     }
 
     public boolean isNotDone() {
@@ -147,8 +149,12 @@ public class SudokuSolver {
                 System.out.println("[SetNextNumber] Kästchen mit wenigsten Möglichkeiten finden und setzen");
                 if (item.possibleNumbersIsEmpty()) {
                     System.out.println("[SetNextNumber] Das gefundene Kästchen kann keine Zahl setzen. Gefundenes Kästchen zurück setzen");
+                    outputText = "Es wurde ein Feld gefunden, bei dem keine Zahl mehr gesetzt werden kann. \n" +
+                            "Die roten Felder wurden zurück gesetzt.";
                     backTracking();
                 }
+                outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
+                        "Somit wird die geringste Zahl eingesetzt.";
                 map.get(i).remove(item);
                 grid.setNumber(item.getNextNumber(), item.row, item.column);
                 solvedItems.add(item);
@@ -175,6 +181,7 @@ public class SudokuSolver {
             numbersFound--;
             if (solvedItems.isEmpty()) {
                 System.out.println("Sudoku nicht lösbar");
+                outputText = "Sudoku nicht lösbar";
                 numbersFound = numbersSearching;
                 return;
             }
@@ -242,4 +249,3 @@ public class SudokuSolver {
 //        }
     }
 }
-

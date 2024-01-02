@@ -3,13 +3,10 @@
 /* Styling für das gesamte Gitter */
 .grid-pane {
     -fx-padding: 10;
-    -fx-grid-lines-visible: true; /* Optional: Zeigt Gitterlinien zwischen den Zellen an */
-
 }
 
 /* Styling für die Zellen */
 .text-field {
-    ;
     -fx-font-size: 18;
     -fx-alignment: center;
     -fx-pref-width: 50;
@@ -22,4 +19,59 @@
 .text-field:disabled {
     -fx-background-color: white;
     -fx-opacity: 1.0;
+}
+
+/* Styling für Tabs */
+.tab {
+    -fx-background-color: #2F4B63; /* Hintergrundfarbe */
+    -fx-border-color: #2F4B63;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.tab-label {
+    -fx-text-fill: #FFFFFF;
+}
+
+
+
+.tab-pane {
+    -fx-tab-min-width: 150px; /* Mindestbreite für Tabs */
+    -fx-background-color: #DCDCDC;
+    -fx-min-height: 100px;
+}
+
+.tab:selected {
+    -fx-background-color: #6B8FA4;
+    -fx-border-color: #6B8FA4;
+    -fx-border-radius: 2;
+}
+
+.tab:hover {
+    -fx-background-color: #6B8FA4; /* Hintergrundfarbe bei Hover */
+}
+
+/* Styling für Buttons */
+.button {
+    -fx-background-color: #2F4B63; /* Hintergrundfarbe */
+    -fx-text-fill: #FFF; /* Textfarbe */
+    -fx-font-weight: bold; /* Fettschrift */
+    -fx-font-size: 14px;
+    -fx-min-height: 30px;
+}
+
+.button:hover {
+    -fx-background-color: #6B8FA4; /* Hintergrundfarbe bei Hover */
+}
+
+.pane {
+    -fx-background-color: #DCDCDC;
+}
+
+.label {
+    -fx-font-size: 15px;
+    -fx-border-color: #2F4B63;
+    -fx-border-radius: 3;
+    -fx-min-width: 700px;
+    -fx-min-height: 70px;
 }
