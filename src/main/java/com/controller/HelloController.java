@@ -69,7 +69,7 @@ public class HelloController {
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
                 TextField textField = new TextField();
-                gridPane.add(textField, i , k);
+                gridPane.add(textField, i, k);
             }
         }
     }
@@ -100,6 +100,7 @@ public class HelloController {
 
     private void updateGrid() {
         boolean[][] newFields = sudokuSolver.getNewFields();
+        boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
         int row = 0;
         int column = 0;
         for (Node node : gridPane.getChildren()) {
@@ -111,8 +112,10 @@ public class HelloController {
                 int number = grid.getGrid()[row][column % size];
                 if (number != 0) {
                     textField.setText(Integer.toString(grid.getGrid()[row][column % size]));
-                    if(newFields[row][column % size]) {
+                    if (newFields[row][column % size]) {
                         textField.setStyle("-fx-background-color: green;");
+                    } else if (removedFields[row][column % size]) {
+                        textField.setStyle("-fx-background-color: red;");
                     } else {
                         textField.setStyle("-fx-background-color: white;");
                     }

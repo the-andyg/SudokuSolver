@@ -13,14 +13,7 @@ public class SudokuSolver {
     private String outputText;
     private boolean[][] newFields;
 
-    public String getOutputText() {
-        return outputText;
-    }
-
-    public boolean[][] getNewFields() {
-        return newFields;
-    }
-
+    private boolean[][] removedFields;
 
     public SudokuSolver(Grid grid) {
         this.grid = grid;
@@ -31,6 +24,19 @@ public class SudokuSolver {
         createMap();
         outputText = "";
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+    }
+
+    public String getOutputText() {
+        return outputText;
+    }
+
+    public boolean[][] getNewFields() {
+        return newFields;
+    }
+
+    public boolean[][] getRemovedFieldsFields() {
+        return removedFields;
     }
 
     public void nextNumber() {
@@ -43,6 +49,7 @@ public class SudokuSolver {
             outputText = "set Box Number";
             return;
         }
+        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         setNextNumber();
         outputText = "set Next Number";
     }
@@ -162,6 +169,7 @@ public class SudokuSolver {
             solvedItems.remove(item);
             item.restorePossibleNumbers();
             map.get(item.getNumberOfPossibleNumbers()).add(item);
+            removedFields[item.row][item.column] = true;
             numbersFound--;
             if (solvedItems.isEmpty()) {
                 System.out.println("Sudoku nicht lösbar");
@@ -172,6 +180,7 @@ public class SudokuSolver {
         }
         System.out.println("[backTracking] Zahl gefunden mit weiterer Option");
         int newNumber = item.getNextNumber();
+        removedFields[item.row][item.column] = true;
         grid.setNumber(newNumber, item.row, item.column);
         sortMap();
     }
