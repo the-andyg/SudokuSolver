@@ -44,11 +44,11 @@ public class SudokuSolver {
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         if (setDistinctNumber()) {
-            outputText = "Alle Felder gesetzt, die nur eine Möglichkeit hatten";
+            outputText = "Das grüne Feld wurde / die grünen Felder wurden gesetzt, weil keine andere Zahl möglich war.";
             return;
         }
         if (setBoxNumber()) {
-            outputText = "Alle Felder gesetzt, bei denen in der Reihe, der Zeile und in der Box nur dort die Zahl gesetzt werden konnte";
+            outputText = "Das grüne Feld wurde / die grünen Felder wurden gesetzt, weil in dem 3x3/4x4 Block die gesetzte Zahl nur dort möglich war.";
             return;
         }
         setNextNumber();
@@ -146,16 +146,16 @@ public class SudokuSolver {
                 if (item.possibleNumbersIsEmpty()) {
                     System.out.println("[SetNextNumber] Das gefundene Kästchen kann keine Zahl setzen. Gefundenes Kästchen zurück setzen");
                     outputText = "Es wurde ein Feld gefunden, bei dem keine Zahl mehr gesetzt werden kann. \n" +
-                            "Die roten Felder wurden zurück gesetzt.";
+                            "Das rote Feld wurde / die roten Felder wurden zurück gesetzt.";
                     backTracking();
                 }
-                outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
-                        "Somit wird die geringste Zahl eingesetzt.";
                 map.get(i).remove(item);
                 grid.setNumber(item.getNextNumber(), item.row, item.column);
                 solvedItems.add(item);
                 newFields[item.row][item.column] = true;
                 sortMap();
+                outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
+                        "Somit wird die geringste Zahl eingesetzt. Weitere Möglichkeiten sind: " + item.getPossibleNumbers();
                 return;
             }
         }

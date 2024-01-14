@@ -187,7 +187,7 @@ public class SudokuController implements Initializable {
                 setTextFieldColor(textField, row, column % size, size);
                 if (number != 0) {
                     if (startingSudoku[row][column % size]) {
-                        textField.setStyle(textField.getStyle() + "-fx-font-weight: bold");
+                        textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 22px;");
                     }
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % size]));
                     if (newFields[row][column % size]) {
