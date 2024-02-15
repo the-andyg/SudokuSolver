@@ -75,3 +75,7 @@
     -fx-min-width: 700px;
     -fx-min-height: 70px;
 }
+
+.comboBox{
+    -fx-margin-left: 50px;
+}

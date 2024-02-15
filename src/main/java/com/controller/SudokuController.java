@@ -1,11 +1,16 @@
 package com.controller;
 
+import com.Data.ExampleSudokus;
+import com.Data.OutputMessages;
 import com.model.Grid;
 import com.model.SudokuSolver;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -16,110 +21,129 @@ import java.util.ResourceBundle;
 public class SudokuController implements Initializable {
     private final int SIZE_NORMAL = 9;
     private final int SIZE_HEX = 16;
-    private final String INIT_TEXT = "Gebe das gewünschte Sudoku ein und bestätige es.";
-    private final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten.";
-    private final String FAIL_TEXT = "Die Eingabe war nicht korrekt.";
-    private final String NOT_SOLVE_ABLE = "Das eingegebene Sudoku ist nicht lösbar";
     @FXML
-    public Label outputNormal;
+    public Label outputDecimal;
     @FXML
     public Label outputHex;
     @FXML
     public Button setButtonHex;
     @FXML
-    public Button setButtonNormal;
+    public Button setButtonDecimal;
     @FXML
     public Button nextNumberHex;
     @FXML
-    public Button nextNumberNormal;
+    public Button nextNumberDecimal;
     @FXML
     public GridPane gridHex;
     @FXML
     public GridPane gridNormal;
-    private SudokuSolver sudokuSolverNormal;
+    @FXML
+    public Button setExample;
+    @FXML
+    public ComboBox<String> comboBoxDecimal;
+    private SudokuSolver sudokuSolverDecimal;
     private SudokuSolver sudokuSolverHex;
-    public Grid gridSudokuNormal;
+    public Grid gridSudokuDecimal;
     public Grid gridSudokuHex;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initGridHex();
         initGridNormal();
+        ObservableList<String> options = FXCollections.observableArrayList();
+        options.add(OutputMessages.CHOOSE);
+        options.add(OutputMessages.EASY);
+        options.add(OutputMessages.MEDIUM);
+        options.add(OutputMessages.HARD);
+        comboBoxDecimal.getItems().addAll(options);
+        comboBoxDecimal.setValue(OutputMessages.CHOOSE);
     }
 
     @FXML
     public void initGridNormal() {
         generateSudokuLayout9x9();
-        nextNumberNormal.setDisable(true);
-        outputNormal.setText(INIT_TEXT);
+        nextNumberDecimal.setDisable(true);
+        outputDecimal.setText(OutputMessages.INIT_TEXT);
     }
 
     @FXML
     public void initGridHex() {
         generateSudokuLayout16x16();
         nextNumberHex.setDisable(true);
-        outputHex.setText(INIT_TEXT);
+        outputHex.setText(OutputMessages.INIT_TEXT);
     }
 
     @FXML
     public void nextNumberNormal() {
-        sudokuSolverNormal.nextNumber();
-        outputNormal.setText(sudokuSolverNormal.getOutputText());
-        updateGrid(gridNormal, sudokuSolverNormal, gridSudokuNormal, SIZE_NORMAL, false);
+        sudokuSolverDecimal.nextNumber();
+        outputDecimal.setText(sudokuSolverDecimal.getOutputText());
+        updateGrid(gridNormal, sudokuSolverDecimal, gridSudokuDecimal, SIZE_NORMAL);
     }
 
     @FXML
     public void nextNumberHex() {
         sudokuSolverHex.nextNumber();
         outputHex.setText(sudokuSolverHex.getOutputText());
-        updateGrid(gridHex, sudokuSolverHex, gridSudokuHex, SIZE_HEX, false);
+        updateGrid(gridHex, sudokuSolverHex, gridSudokuHex, SIZE_HEX);
+    }
+
+    @FXML
+    public void setSudokuExampleDecimal() {
+        switch (comboBoxDecimal.getValue()) {
+            case OutputMessages.EASY ->
+                    updateGrid(gridNormal, sudokuSolverDecimal, new Grid(ExampleSudokus.simpleSudokuDecimal(), SIZE_NORMAL), SIZE_NORMAL);
+            case OutputMessages.MEDIUM ->
+                    updateGrid(gridNormal, sudokuSolverDecimal, new Grid(ExampleSudokus.mediumSudokuDecimal(), SIZE_NORMAL), SIZE_NORMAL);
+            case OutputMessages.HARD ->
+                    updateGrid(gridNormal, sudokuSolverDecimal, new Grid(ExampleSudokus.hardSudokuDecimal(), SIZE_NORMAL), SIZE_NORMAL);
+        }
     }
 
     @FXML
     public void setGridNormal() {
         int[][] sudoku = getGrid(gridNormal, SIZE_NORMAL);
         if (sudoku == null) {
-            outputNormal.setText(FAIL_TEXT);
+            outputDecimal.setText(OutputMessages.FAIL_TEXT);
             return;
         }
-        gridSudokuNormal = new Grid(sudoku, SIZE_NORMAL);
-        if (!gridSudokuNormal.isSolveAble()) {
-            outputNormal.setText(NOT_SOLVE_ABLE);
+        gridSudokuDecimal = new Grid(sudoku, SIZE_NORMAL);
+        if (!gridSudokuDecimal.isSolveAble()) {
+            outputDecimal.setText(OutputMessages.NOT_SOLVABLE);
             return;
         }
-        sudokuSolverNormal = new SudokuSolver(gridSudokuNormal);
-        setButtonNormal.setDisable(true);
-        updateGrid(gridNormal, sudokuSolverNormal, gridSudokuNormal, SIZE_NORMAL, true);
-        nextNumberNormal.setDisable(false);
-        outputNormal.setText(SET_TEXT);
+        sudokuSolverDecimal = new SudokuSolver(gridSudokuDecimal);
+        setButtonDecimal.setDisable(true);
+        updateGrid(gridNormal, sudokuSolverDecimal, gridSudokuDecimal, SIZE_NORMAL);
+        nextNumberDecimal.setDisable(false);
+        outputDecimal.setText(OutputMessages.SET_TEXT);
     }
 
     @FXML
     public void setGridHex() {
         int[][] sudoku = getGrid(gridHex, SIZE_HEX);
         if (sudoku == null) {
-            outputHex.setText(FAIL_TEXT);
+            outputHex.setText(OutputMessages.FAIL_TEXT);
             return;
         }
         gridSudokuHex = new Grid(sudoku, SIZE_HEX);
         if (!gridSudokuHex.isSolveAble()) {
-            outputHex.setText(NOT_SOLVE_ABLE);
+            outputHex.setText(OutputMessages.NOT_SOLVABLE);
             return;
         }
         sudokuSolverHex = new SudokuSolver(gridSudokuHex);
         setButtonHex.setDisable(true);
-        updateGrid(gridHex, sudokuSolverHex, gridSudokuHex, SIZE_HEX, true);
+        updateGrid(gridHex, sudokuSolverHex, gridSudokuHex, SIZE_HEX);
         nextNumberHex.setDisable(false);
-        outputHex.setText(SET_TEXT);
+        outputHex.setText(OutputMessages.SET_TEXT);
     }
 
     @FXML
     public void generateSudokuLayout9x9() {
         gridNormal.getChildren().clear();
         generateSudokuLayout(gridNormal, SIZE_NORMAL);
-        setButtonNormal.setDisable(false);
-        nextNumberNormal.setDisable(true);
-        outputNormal.setText(INIT_TEXT);
+        setButtonDecimal.setDisable(false);
+        nextNumberDecimal.setDisable(true);
+        outputDecimal.setText(OutputMessages.INIT_TEXT);
     }
 
     @FXML
@@ -128,7 +152,7 @@ public class SudokuController implements Initializable {
         generateSudokuLayout(gridHex, SIZE_HEX);
         setButtonHex.setDisable(false);
         nextNumberHex.setDisable(true);
-        outputHex.setText(INIT_TEXT);
+        outputHex.setText(OutputMessages.INIT_TEXT);
     }
 
     private void generateSudokuLayout(GridPane grid, int size) {
@@ -171,7 +195,7 @@ public class SudokuController implements Initializable {
         return result;
     }
 
-    private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku, int size, boolean init) {
+    private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku, int size) {
         boolean[][] newFields = sudokuSolver.getNewFields();
         boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
         boolean[][] startingSudoku = gridSudoku.getStartingSudoku();

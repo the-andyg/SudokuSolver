@@ -12,6 +12,8 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
 <BorderPane styleClass="styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.controller.SudokuController">
     <center>
@@ -20,17 +22,22 @@
                 <Tab text="9x9">
                     <content>
                         <VBox alignment="CENTER">
+                            <HBox alignment="CENTER_LEFT" spacing="10" >
+                                <ComboBox maxHeight="60.0" prefWidth="150.0" fx:id="comboBoxDecimal"/>
+                                <Button fx:id="setExample" onAction="#setSudokuExampleDecimal" text="Ok"/>
+                            </HBox>
+
                             <GridPane fx:id="gridNormal" alignment="CENTER" prefHeight="800.0"/>
-                            <Label fx:id="outputNormal" alignment="CENTER"/>
+                            <Label fx:id="outputDecimal" alignment="CENTER"/>
                             <ButtonBar prefHeight="100.0" prefWidth="1000.0">
                                 <buttons>
                                     <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="2000" spacing="10">
-                                        <Button fx:id="setButtonNormal" onAction="#setGridNormal"
+                                        <Button fx:id="setButtonDecimal" onAction="#setGridNormal"
                                                 text="Sudoku bestätigen"/>
                                         <Button onAction="#generateSudokuLayout9x9" text="Zurück setzen"/>
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" prefWidth="200" spacing="10.0">
-                                        <Button fx:id="nextNumberNormal" onAction="#nextNumberNormal"
+                                        <Button fx:id="nextNumberDecimal" onAction="#nextNumberNormal"
                                                 text="Nächste Zahl"/>
                                         <padding>
                                             <Insets right="20.0"/>
