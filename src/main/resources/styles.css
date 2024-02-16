@@ -1,9 +1,6 @@
 /* sudoku.css */
 
 /* Styling für das gesamte Gitter */
-.grid-pane {
-    -fx-padding: 10;
-}
 
 /* Styling für die Zellen */
 .text-field {
@@ -74,8 +71,4 @@
     -fx-border-radius: 3;
     -fx-min-width: 700px;
     -fx-min-height: 70px;
-}
-
-.comboBox{
-    -fx-margin-left: 50px;
 }

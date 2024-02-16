@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -11,9 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.collections.FXCollections?>
+
 <BorderPane styleClass="styles.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.controller.SudokuController">
     <center>
@@ -22,51 +20,62 @@
                 <Tab text="9x9">
                     <content>
                         <VBox alignment="CENTER">
-                            <HBox alignment="CENTER_LEFT" spacing="10" >
-                                <ComboBox maxHeight="60.0" prefWidth="150.0" fx:id="comboBoxDecimal"/>
-                                <Button fx:id="setExample" onAction="#setSudokuExampleDecimal" text="Ok"/>
+                            <padding>
+                                <Insets left="20" top="20" bottom="20" right="20"/>
+                            </padding>
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <ComboBox maxHeight="40.0" prefWidth="200.0" fx:id="comboBoxDecimal"/>
+                                <Button onAction="#setSudokuExampleDecimal" text="Ok"/>
                             </HBox>
-
-                            <GridPane fx:id="gridNormal" alignment="CENTER" prefHeight="800.0"/>
-                            <Label fx:id="outputDecimal" alignment="CENTER"/>
-                            <ButtonBar prefHeight="100.0" prefWidth="1000.0">
-                                <buttons>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="2000" spacing="10">
-                                        <Button fx:id="setButtonDecimal" onAction="#setGridNormal"
-                                                text="Sudoku bestätigen"/>
-                                        <Button onAction="#generateSudokuLayout9x9" text="Zurück setzen"/>
+                            <GridPane fx:id="gridPaneDecimal" alignment="CENTER" minHeight="490" minWidth="490"
+                                      prefHeight="3000"/>
+                            <Label fx:id="outputDecimal" alignment="CENTER" prefWidth="Infinity"/>
+                            <HBox alignment="CENTER">
+                                <padding>
+                                    <Insets top="30"/>
+                                </padding>
+                                    <HBox alignment="CENTER_LEFT" prefWidth="3000" spacing="10">
+                                        <Button fx:id="setButtonDecimal" onAction="#getAndCheckGridDecimal"
+                                                text="Zahl/en bestätigen"/>
+                                        <Button onAction="#generateSudokuLayoutDecimal" text="Alle Zahlen löschen"/>
                                     </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefWidth="200" spacing="10.0">
-                                        <Button fx:id="nextNumberDecimal" onAction="#nextNumberNormal"
+                                    <HBox alignment="CENTER_RIGHT" prefWidth="3000" spacing="10.0">
+                                        <Button fx:id="nextNumberDecimal" onAction="#nextNumberDecimal"
                                                 text="Nächste Zahl"/>
-                                        <padding>
-                                            <Insets right="20.0"/>
-                                        </padding>
+                                        <Button fx:id="solveDecimal" onAction="#solveDecimal" text="Sudoku lösen"/>
                                     </HBox>
-                                </buttons>
-                            </ButtonBar>
+                            </HBox>
                         </VBox>
                     </content>
                 </Tab>
                 <Tab text="16x16">
                     <content>
-                        <VBox alignment="CENTER" prefHeight="800.0">
-                            <GridPane fx:id="gridHex" alignment="CENTER" prefHeight="900.0"/>
-                            <Label fx:id="outputHex" alignment="CENTER"/>
-                            <ButtonBar BorderPane.alignment="CENTER">
-                                <buttons>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="2000" spacing="10">
-                                        <Button fx:id="setButtonHex" onAction="#setGridHex" text="Sudoku bestätigen"/>
-                                        <Button onAction="#generateSudokuLayout16x16" text="Zurück setzen"/>
-                                    </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefWidth="200" spacing="10">
-                                        <Button fx:id="nextNumberHex" onAction="#nextNumberHex" text="Nächste Zahl"/>
-                                        <padding>
-                                            <Insets right="20.0"/>
-                                        </padding>
-                                    </HBox>
-                                </buttons>
-                            </ButtonBar>
+                        <VBox alignment="CENTER">
+                            <padding>
+                                <Insets left="20" top="20" bottom="20" right="20"/>
+                            </padding>
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <ComboBox maxHeight="40.0" prefWidth="200.0" fx:id="comboBoxHex"/>
+                                <Button onAction="#setSudokuExampleHex" text="Ok"/>
+                            </HBox>
+                            <GridPane fx:id="gridPaneHex" alignment="CENTER" minHeight="830" minWidth="830"
+                                      prefHeight="3000.0"/>
+                            <Label fx:id="outputHex" alignment="CENTER" prefWidth="Infinity"/>
+                            <HBox alignment="CENTER">
+                                <padding>
+                                    <Insets top="30"/>
+                                </padding>
+                                <HBox alignment="CENTER_LEFT" spacing="10" prefWidth="3000">
+                                    <Button fx:id="setButtonHex" onAction="#getAndCheckGridHex"
+                                            text="Zahl/en bestätigen"/>
+                                    <Button onAction="#generateSudokuLayoutHex" text="Alle Zahlen löschen"/>
+                                </HBox>
+                                <HBox alignment="CENTER_RIGHT" spacing="10" prefWidth="3000">
+                                    <Button fx:id="nextNumberHex" onAction="#nextNumberHex"
+                                            text="Nächste Zahl"/>
+                                    <Button fx:id="solveHex" onAction="#solveHex" text="Sudoku lösen"/>
+                                </HBox>
+                            </HBox>
                         </VBox>
                     </content>
                 </Tab>
