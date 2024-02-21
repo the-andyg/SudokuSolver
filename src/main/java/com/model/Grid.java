@@ -6,34 +6,17 @@ import java.util.List;
 public class Grid {
     private int[][] grid;
     private final int gridSize;
-    private final boolean[][] startingSudoku;
     private boolean solveAble;
 
 
     public Grid(int[][] grid, int gridSize) {
         this.grid = grid;
         this.gridSize = gridSize;
-        startingSudoku = new boolean[gridSize][gridSize];
-        setStartingSudoku();
         checkInput();
     }
 
     public boolean isSolveAble() {
         return solveAble;
-    }
-
-    private void setStartingSudoku() {
-        for (int i = 0; i < gridSize; i++) {
-            for (int j = 0; j < gridSize; j++) {
-                if (grid[i][j] != 0) {
-                    startingSudoku[i][j] = true;
-                }
-            }
-        }
-    }
-
-    public boolean[][] getStartingSudoku() {
-        return startingSudoku;
     }
 
     public int[][] getGrid() {

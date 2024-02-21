@@ -282,6 +282,7 @@ public class TestSudokuSolver {
         int count = 0;
         while (solver.isNotDone()) {
             solver.nextNumber();
+            SudokuValidator.printSudoku(grid.getGrid(), 9);
             count++;
         }
 

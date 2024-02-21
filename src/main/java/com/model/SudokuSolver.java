@@ -59,12 +59,17 @@ public class SudokuSolver {
     }
 
     private boolean setBoxNumber() {
-        boolean result = false;
         for (int x = 2; x <= grid.getGridSize(); x++) {
             if (!map.get(x).isEmpty()) {
                 for (int y = 0; y < map.get(x).size(); y++) {
                     MapItem item = map.get(x).get(y);
                     int check = checkBoxNumber(item);
+                    if (check == 0) {
+                        check = checkRowNumber(item);
+                    }
+                    if (check == 0) {
+                        check = checkColumnNumber(item);
+                    }
                     if (check != 0) {
                         grid.setNumber(check, item.row, item.column);
                         item.clearPossibleNumbers();
@@ -72,25 +77,23 @@ public class SudokuSolver {
                         solvedItems.add(item);
                         newFields[item.row][item.column] = true;
                         System.out.println("[setBoxNumber] setBox: " + item.row + ";" + item.column);
-                        result = true;
+                        sortMap();
+                        return true;
                     }
                 }
             }
         }
-        if (result) {
-            sortMap();
-        }
-        return result;
+        return false;
     }
 
-    private int checkBoxNumber(MapItem itemOne) {
+    private int checkBoxNumber(MapItem item) {
         boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
         int boxSize = (int) Math.sqrt(grid.getGridSize());
-        for (int numberOne : itemOne.getPossibleNumbers()) {
+        for (int numberOne : item.getPossibleNumbers()) {
             boxNumbers[numberOne] = true;
         }
-        int localRowOne = itemOne.row - itemOne.row % boxSize;
-        int localColumnOne = itemOne.column - itemOne.column % boxSize;
+        int localRowOne = item.row - item.row % boxSize;
+        int localColumnOne = item.column - item.column % boxSize;
         for (int i = 1; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
                 for (int k = 0; k < map.get(i).size(); k++) {
@@ -98,7 +101,76 @@ public class SudokuSolver {
                     int localRowTwo = itemTwo.row - itemTwo.row % boxSize;
                     int localColumnTwo = itemTwo.column - itemTwo.column % boxSize;
                     if (localColumnOne == localColumnTwo && localRowOne == localRowTwo
-                            && !(itemOne.column == itemTwo.column && itemOne.row == itemTwo.row)) {
+                            && !(item.column == itemTwo.column && item.row == itemTwo.row)) {
+                        for (int numberTwo : itemTwo.getPossibleNumbers()) {
+                            boxNumbers[numberTwo] = false;
+                        }
+                    }
+                }
+            }
+        }
+        int count = 0;
+        int result = 0;
+        for (int i = 0; i < boxNumbers.length; i++) {
+            if (boxNumbers[i]) {
+                count++;
+                result = i;
+            }
+        }
+        if (count == 1) {
+            return result;
+        } else {
+            return 0;
+        }
+    }
+
+    private int checkRowNumber(MapItem item) {
+        boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
+        for (int numberOne : item.getPossibleNumbers()) {
+            boxNumbers[numberOne] = true;
+        }
+        // check all leftover numbers
+        for (int i = 1; i <= grid.getGridSize(); i++) {
+            if (!map.get(i).isEmpty()) {
+                for (int k = 0; k < map.get(i).size(); k++) {
+                    MapItem itemTwo = map.get(i).get(k);
+                    // check if the item is in the same row
+                    if (item.row == itemTwo.row && item.column != itemTwo.column) {
+                        // if the item is in the same row set all equal numbers false
+                        for (int numberTwo : itemTwo.getPossibleNumbers()) {
+                            boxNumbers[numberTwo] = false;
+                        }
+                    }
+                }
+            }
+        }
+        int count = 0;
+        int result = 0;
+        for (int i = 0; i < boxNumbers.length; i++) {
+            // check if a number is left
+            if (boxNumbers[i]) {
+                count++;
+                result = i;
+            }
+        }
+        // if more than one number is left return 0 because it's not unique
+        if (count == 1) {
+            return result;
+        } else {
+            return 0;
+        }
+    }
+
+    private int checkColumnNumber(MapItem item) {
+        boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
+        for (int numberOne : item.getPossibleNumbers()) {
+            boxNumbers[numberOne] = true;
+        }
+        for (int i = 1; i <= grid.getGridSize(); i++) {
+            if (!map.get(i).isEmpty()) {
+                for (int k = 0; k < map.get(i).size(); k++) {
+                    MapItem itemTwo = map.get(i).get(k);
+                    if (item.column == itemTwo.column && item.row != itemTwo.row) {
                         for (int numberTwo : itemTwo.getPossibleNumbers()) {
                             boxNumbers[numberTwo] = false;
                         }

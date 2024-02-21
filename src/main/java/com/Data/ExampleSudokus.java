@@ -47,6 +47,8 @@ public class ExampleSudokus {
         };
     }
 
+    //TODO andere Beispiele
+
     public static int[][] simpleSudokuHex() {
 
         return new int[][]{

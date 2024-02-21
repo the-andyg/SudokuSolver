@@ -145,7 +145,6 @@ public class SudokuController implements Initializable {
     private void setGridDecimal(Grid grid) {
         gridSudokuDecimal = grid;
         sudokuSolverDecimal = new SudokuSolver(gridSudokuDecimal);
-        setButtonDecimal.setDisable(true);
         updateGrid(gridPaneDecimal, sudokuSolverDecimal, gridSudokuDecimal);
         nextNumberDecimal.setDisable(false);
         solveDecimal.setDisable(false);
@@ -170,7 +169,6 @@ public class SudokuController implements Initializable {
     private void setGridHex(Grid grid) {
         gridSudokuHex = grid;
         sudokuSolverHex = new SudokuSolver(gridSudokuHex);
-        setButtonHex.setDisable(true);
         updateGrid(gridPaneHex, sudokuSolverHex, gridSudokuHex);
         nextNumberHex.setDisable(false);
         solveHex.setDisable(false);
@@ -234,7 +232,6 @@ public class SudokuController implements Initializable {
             regex = "[1-9]";
         } else {
             regex = "^(1[0-6]|[1-9])$";
-            ;
         }
         for (Node node : grid.getChildren()) {
             if (column % size == 0 && column != 0) {
@@ -258,7 +255,6 @@ public class SudokuController implements Initializable {
     private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku) {
         boolean[][] newFields = sudokuSolver.getNewFields();
         boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
-        boolean[][] startingSudoku = gridSudoku.getStartingSudoku();
         int row = 0;
         int column = 0;
         for (Node node : grid.getChildren()) {
@@ -266,13 +262,10 @@ public class SudokuController implements Initializable {
                 row++;
             }
             if (node instanceof TextField textField) {
-                textField.setDisable(true);
                 int number = gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()];
                 setTextFieldColor(textField, row, column % gridSudoku.getGridSize(), gridSudoku.getGridSize());
                 if (number != 0) {
-                    if (startingSudoku[row][column % gridSudoku.getGridSize()]) {
-                        textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
-                    }
+                    textField.setDisable(true);
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()]));
                     if (newFields[row][column % gridSudoku.getGridSize()]) {
                         textField.setStyle("-fx-background-color: green;");
