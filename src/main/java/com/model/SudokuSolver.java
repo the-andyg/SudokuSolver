@@ -53,7 +53,7 @@ public class SudokuSolver {
             outputText = "Das grüne Feld wurde / die grünen Felder wurden gesetzt, weil keine andere Zahl möglich war.";
             return;
         }
-        if (setBoxNumber()) {
+        if (checkBoxRowColumn()) {
             outputText = "Das grüne Feld wurde / die grünen Felder wurden gesetzt, weil in dem 3x3/4x4 Block die gesetzte Zahl nur dort möglich war.";
             return;
         }
@@ -66,7 +66,9 @@ public class SudokuSolver {
         Grid newGrid = new Grid(numbers, numbers.length);
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers.length; j++) {
-                if (grid.getGrid()[i][j] != numbers[i][j]) {
+                if (grid.getGrid()[i][j] != 0 && grid.getGrid()[i][j] != numbers[i][j]) {
+                    deleteOrChangeNumber(numbers[i][j], i, j);
+                } else if (grid.getGrid()[i][j] != numbers[i][j]) {
                     if (!newGrid.checkNumberIsValid(numbers[i][j], i, j)) {
                         outputText = OutputMessages.numberNotAllowed(numbers[i][j], i, j);
                         removedFields[i][j] = true;
@@ -82,7 +84,8 @@ public class SudokuSolver {
                                         solvedItems.add(item);
                                         newFields[item.row][item.column] = true;
                                         outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
-                                                "Somit wird die geringste Zahl eingesetzt. Weitere Möglichkeiten sind: " + item.getPossibleNumbers();
+                                                "Somit wird die geringste Zahl eingesetzt. Weitere Möglichkeiten sind: "
+                                                + item.getPossibleNumbers();
                                     }
                                 }
                             }
@@ -94,7 +97,7 @@ public class SudokuSolver {
         sortMap();
     }
 
-    private boolean setBoxNumber() {
+    private boolean checkBoxRowColumn() {
         for (int x = 2; x <= grid.getGridSize(); x++) {
             if (!map.get(x).isEmpty()) {
                 for (int y = 0; y < map.get(x).size(); y++) {
@@ -294,6 +297,37 @@ public class SudokuSolver {
         removedFields[item.row][item.column] = true;
         grid.setNumber(newNumber, item.row, item.column);
         sortMap();
+    }
+
+    private boolean deleteOrChangeNumber(int newNumber, int row, int column) {
+        boolean found = false;
+        MapItem changed = null;
+        for (MapItem item : solvedItems) {
+            if (item.row == row && item.column == column) {
+                found = true;
+                if (newNumber == 0) {
+                    changed = item;
+                } else {
+                    if (item.getPossibleNumbers().contains(newNumber)) {
+                        item.getPossibleNumbers().add(grid.getGrid()[row][column]);
+                        item.getNumber(newNumber);
+                        grid.setNumber(newNumber, row, column);
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            if (found) {
+                item.restorePossibleNumbers();
+            }
+        }
+        if (changed != null) {
+            solvedItems.remove(changed);
+            changed.restorePossibleNumbers();
+            grid.setNumber(newNumber, row, column);
+            map.get(changed.getNumberOfPossibleNumbers()).add(changed);
+        }
+        return true;
     }
 
     private void sortMap() {

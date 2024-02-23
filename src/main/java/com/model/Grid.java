@@ -1,5 +1,7 @@
 package com.model;
 
+import com.Data.OutputMessages;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,16 +9,27 @@ public class Grid {
     private int[][] grid;
     private final int gridSize;
     private boolean solveAble;
-
+    private final boolean[][] startingSudoku;
+    private String outputMessage;
 
     public Grid(int[][] grid, int gridSize) {
         this.grid = grid;
         this.gridSize = gridSize;
+        startingSudoku = new boolean[gridSize][gridSize];
+        outputMessage = "";
         checkInput();
+    }
+
+    public String getOutputMessage() {
+        return outputMessage;
     }
 
     public boolean isSolveAble() {
         return solveAble;
+    }
+
+    public boolean[][] getStartingSudoku() {
+        return startingSudoku;
     }
 
     public int[][] getGrid() {
@@ -88,14 +101,24 @@ public class Grid {
     }
 
     public void checkInput() {
+        solveAble = false;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
+                //
                 if (!checkNumberIsValid(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
+                    outputMessage = OutputMessages.numberNotAllowed(grid[i][j], i, j);
                     return;
+                }
+                if (grid[i][j] != 0) {
+                    startingSudoku[i][j] = true;
+                    solveAble = true;
                 }
             }
         }
-        solveAble = true;
+        // input has no number
+        if (!solveAble) {
+            outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
+        }
     }
 }
