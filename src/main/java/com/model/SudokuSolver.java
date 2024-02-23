@@ -1,11 +1,13 @@
 package com.model;
 
+import com.Data.OutputMessages;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class SudokuSolver {
-    private final Grid grid;
+    private Grid grid;
     private final HashMap<Integer, List<MapItem>> map;
     private final List<MapItem> solvedItems;
     private int numbersSearching;
@@ -36,6 +38,10 @@ public class SudokuSolver {
         return removedFields;
     }
 
+    public boolean isNotDone() {
+        return !(solvedItems.size() == numbersSearching);
+    }
+
     public void nextNumber() {
         if (!isNotDone()) {
             outputText = "Das Sudoku wurde erfolgreich gelöst";
@@ -54,8 +60,38 @@ public class SudokuSolver {
         setNextNumber();
     }
 
-    public boolean isNotDone() {
-        return !(solvedItems.size() == numbersSearching);
+    public void checkNewNumbers(int[][] numbers) {
+        newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        Grid newGrid = new Grid(numbers, numbers.length);
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = 0; j < numbers.length; j++) {
+                if (grid.getGrid()[i][j] != numbers[i][j]) {
+                    if (!newGrid.checkNumberIsValid(numbers[i][j], i, j)) {
+                        outputText = OutputMessages.numberNotAllowed(numbers[i][j], i, j);
+                        removedFields[i][j] = true;
+                    } else {
+                        newFields[i][j] = true;
+                        for (int x = 1; x <= grid.getGridSize(); x++) {
+                            if (!map.get(x).isEmpty()) {
+                                for (int y = 0; y < map.get(x).size(); y++) {
+                                    MapItem item = map.get(x).get(y);
+                                    if (item.row == i && item.column == j) {
+                                        map.get(x).remove(item);
+                                        grid.setNumber(item.getNumber(numbers[i][j]), item.row, item.column);
+                                        solvedItems.add(item);
+                                        newFields[item.row][item.column] = true;
+                                        outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
+                                                "Somit wird die geringste Zahl eingesetzt. Weitere Möglichkeiten sind: " + item.getPossibleNumbers();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        sortMap();
     }
 
     private boolean setBoxNumber() {
@@ -305,13 +341,5 @@ public class SudokuSolver {
                 }
             }
         }
-//        for (int i = 1; i <= grid.getGridSize(); i++) {
-//            if (!map.get(i).isEmpty()) {
-//                for (int j = 0; j < map.get(i).size(); j++) {
-//                    MapItem m = map.get(i).get(j);
-//                    System.out.println(m.row + ";" + m.column + ":" + m.getPossibleNumbers());
-//                }
-//            }
-//        }
     }
 }

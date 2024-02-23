@@ -11,4 +11,8 @@ public class OutputMessages {
     public static final String HARD = "Schwer";
     public static final String CHOOSE = "Wähle einen Schwierigkeitsgrad";
     public static final String CHOOSE_AN_EXAMPLE = "Wähle einen Schwierigkeitsgrad.";
+
+    public static String numberNotAllowed(int number, int row, int column) {
+        return "Die Zahl " + number + " ist an der Stelle " + row + ";" + column + " nicht erlaubt.";
+    }
 }

@@ -27,13 +27,25 @@ public class MapItem {
         return result;
     }
 
+    public int getNumber(int number) {
+        int index = 0;
+        for (int i : this.possibleNumbers) {
+            if(i == number) {
+                possibleNumbers.remove(index);
+                return i;
+            }
+            index++;
+        }
+        return 0;
+    }
+
     public boolean possibleNumbersIsEmpty() {
         return possibleNumbers.isEmpty();
     }
 
-    public void reducePossibleNumbers(List<Integer> possibleNumbers) {
+    public void reducePossibleNumbers(List<Integer> newPossibleNumbers) {
         this.possibleNumbers.clear();
-        this.possibleNumbers.addAll(possibleNumbers);
+        this.possibleNumbers.addAll(newPossibleNumbers);
     }
 
     public List<Integer> getPossibleNumbers() {

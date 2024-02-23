@@ -32,21 +32,21 @@ public class Grid {
     }
 
     public boolean checkNumberIsValid(int number, int row, int column) {
-        return checkRow(number, row) && checkColumn(number, column) && checkBox(number, row, column);
+        return checkRow(number, row, column) && checkColumn(number, row, column) && checkBox(number, row, column);
     }
 
-    private boolean checkRow(int number, int row) {
+    private boolean checkRow(int number, int row, int column) {
         for (int i = 0; i < gridSize; i++) {
-            if (grid[row][i] == number) {
+            if (grid[row][i] == number && i != column) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkColumn(int number, int column) {
+    private boolean checkColumn(int number, int row, int column) {
         for (int i = 0; i < gridSize; i++) {
-            if (grid[i][column] == number) {
+            if (grid[i][column] == number && i != row) {
                 return false;
             }
         }
@@ -59,7 +59,7 @@ public class Grid {
         int localColumn = column - column % boxSize;
         for (int i = localRow; i < localRow + boxSize; i++) {
             for (int j = localColumn; j < localColumn + boxSize; j++) {
-                if (grid[i][j] == number) {
+                if (grid[i][j] == number && !(i == row && j == column)) {
                     return false;
                 }
             }
@@ -90,13 +90,10 @@ public class Grid {
     public void checkInput() {
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
-                int s = grid[i][j];
-                grid[i][j] = 0;
-                if (!checkNumberIsValid(s, i, j) && s != 0) {
+                if (!checkNumberIsValid(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
                     return;
                 }
-                grid[i][j] = s;
             }
         }
         solveAble = true;

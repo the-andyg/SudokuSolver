@@ -65,6 +65,7 @@ public class SudokuController implements Initializable {
         nextNumberDecimal.setDisable(true);
         solveDecimal.setDisable(true);
         outputDecimal.setText(OutputMessages.INIT_TEXT);
+        sudokuSolverDecimal = new SudokuSolver(new Grid(getGrid(gridPaneDecimal, SIZE_DECIMAL), SIZE_DECIMAL));
     }
 
     /**
@@ -75,6 +76,7 @@ public class SudokuController implements Initializable {
         nextNumberHex.setDisable(true);
         solveHex.setDisable(true);
         outputHex.setText(OutputMessages.INIT_TEXT);
+        sudokuSolverHex = new SudokuSolver(new Grid(getGrid(gridPaneHex, SIZE_HEX), SIZE_HEX));
     }
 
     /**
@@ -134,12 +136,9 @@ public class SudokuController implements Initializable {
             outputDecimal.setText(OutputMessages.FAIL_TEXT);
             return;
         }
-        Grid grid = new Grid(sudoku, SIZE_DECIMAL);
-        if (!grid.isSolveAble()) {
-            outputDecimal.setText(OutputMessages.NOT_SOLVABLE);
-            return;
-        }
-        setGridDecimal(grid);
+        sudokuSolverDecimal.checkNewNumbers(sudoku);
+        updateGrid(gridPaneDecimal, sudokuSolverDecimal, gridSudokuDecimal);
+        outputDecimal.setText(sudokuSolverDecimal.getOutputText());
     }
 
     private void setGridDecimal(Grid grid) {
@@ -158,12 +157,9 @@ public class SudokuController implements Initializable {
             outputHex.setText(OutputMessages.FAIL_TEXT);
             return;
         }
-        Grid grid = new Grid(sudoku, SIZE_HEX);
-        if (!grid.isSolveAble()) {
-            outputHex.setText(OutputMessages.NOT_SOLVABLE);
-            return;
-        }
-        setGridHex(grid);
+        sudokuSolverHex.checkNewNumbers(sudoku);
+        updateGrid(gridPaneHex, sudokuSolverHex, gridSudokuHex);
+        outputHex.setText(sudokuSolverHex.getOutputText());
     }
 
     private void setGridHex(Grid grid) {
@@ -262,10 +258,10 @@ public class SudokuController implements Initializable {
                 row++;
             }
             if (node instanceof TextField textField) {
+                textField.setDisable(false);
                 int number = gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()];
                 setTextFieldColor(textField, row, column % gridSudoku.getGridSize(), gridSudoku.getGridSize());
                 if (number != 0) {
-                    textField.setDisable(true);
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()]));
                     if (newFields[row][column % gridSudoku.getGridSize()]) {
                         textField.setStyle("-fx-background-color: green;");
