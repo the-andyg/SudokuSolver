@@ -301,17 +301,17 @@ public class SudokuController implements Initializable {
                 setTextFieldColor(textField, row, column % gridSudoku.getGridSize(), gridSudoku.getGridSize());
                 if (number != 0) {
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()]));
-                    if (startingSudoku[row][column % gridSudoku.getGridSize()]) {
-                        textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
-                        textField.setDisable(true);
-                    }
-                    if (newFields[row][column % gridSudoku.getGridSize()]) {
-                        textField.setStyle("-fx-background-color: green;");
-                    } else if (removedFields[row][column % gridSudoku.getGridSize()]) {
-                        textField.setStyle("-fx-background-color: red;");
-                    }
                 } else {
                     textField.setText("");
+                }
+                if (startingSudoku[row][column % gridSudoku.getGridSize()]) {
+                    textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
+                    textField.setDisable(true);
+                }
+                if (newFields[row][column % gridSudoku.getGridSize()]) {
+                    textField.setStyle("-fx-background-color: green;");
+                } else if (removedFields[row][column % gridSudoku.getGridSize()]) {
+                    textField.setStyle("-fx-background-color: red;");
                 }
             }
             column++;

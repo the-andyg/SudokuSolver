@@ -28,7 +28,8 @@ public class TestSudokuSolver {
             solver.nextNumber();
             count++;
         }
-        assertTrue(SudokuValidator.isValidSudoku(grid.getGrid(), 9));
+        Grid checkGrid = new Grid(grid.getGrid(), grid.getGridSize());
+        assertTrue(checkGrid.isSolveAble());
         System.out.println(count);
     }
 
