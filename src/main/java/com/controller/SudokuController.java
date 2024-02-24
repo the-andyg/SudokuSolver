@@ -230,6 +230,7 @@ public class SudokuController implements Initializable {
         while (sudokuSolverDecimal.isNotDone()) {
             sudokuSolverDecimal.nextNumber();
         }
+        sudokuSolverDecimal.nextNumber();
         updateGrid(gridPaneDecimal, sudokuSolverDecimal, gridSudokuDecimal);
         outputDecimal.setText(sudokuSolverDecimal.getOutputText());
     }
@@ -239,6 +240,7 @@ public class SudokuController implements Initializable {
         while (sudokuSolverHex.isNotDone()) {
             sudokuSolverHex.nextNumber();
         }
+        sudokuSolverHex.nextNumber();
         updateGrid(gridPaneHex, sudokuSolverHex, gridSudokuHex);
         outputHex.setText(sudokuSolverHex.getOutputText());
     }

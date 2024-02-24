@@ -44,7 +44,12 @@ public class SudokuSolver {
 
     public void nextNumber() {
         if (!isNotDone()) {
-            outputText = "Das Sudoku wurde erfolgreich gelöst";
+            grid.checkInputs(false);
+            if (!grid.isSolveAble()) {
+                outputText = "Fehler! Das Sudoku wurde nicht richtig gelöst!";
+            } else {
+                outputText = "Das Sudoku wurde erfolgreich gelöst";
+            }
             return;
         }
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
@@ -69,8 +74,9 @@ public class SudokuSolver {
                 if (grid.getGrid()[i][j] != 0 && grid.getGrid()[i][j] != numbers[i][j]) {
                     deleteOrChangeNumber(numbers[i][j], i, j);
                 } else if (grid.getGrid()[i][j] != numbers[i][j]) {
-                    if (!newGrid.checkNumberIsValid(numbers[i][j], i, j)) {
-                        outputText = OutputMessages.numberNotAllowed(numbers[i][j], i, j);
+                    newGrid.checkInput(i, j);
+                    if (!newGrid.isSolveAble()) {
+                        outputText = newGrid.getOutputMessage();
                         removedFields[i][j] = true;
                     } else {
                         newFields[i][j] = true;
@@ -83,9 +89,8 @@ public class SudokuSolver {
                                         grid.setNumber(item.getNumber(numbers[i][j]), item.row, item.column);
                                         solvedItems.add(item);
                                         newFields[item.row][item.column] = true;
-                                        outputText = "Für das grüne Kästchen wurde keine eindeutige Zahl gefunden.\n" +
-                                                "Somit wird die geringste Zahl eingesetzt. Weitere Möglichkeiten sind: "
-                                                + item.getPossibleNumbers();
+                                        outputText = OutputMessages.valideNumberWithMoreOptions(numbers[i][j], i, j,
+                                                item.getPossibleNumbers());
                                     }
                                 }
                             }
@@ -299,7 +304,7 @@ public class SudokuSolver {
         sortMap();
     }
 
-    private boolean deleteOrChangeNumber(int newNumber, int row, int column) {
+    private void deleteOrChangeNumber(int newNumber, int row, int column) {
         boolean found = false;
         MapItem changed = null;
         for (MapItem item : solvedItems) {
@@ -313,7 +318,8 @@ public class SudokuSolver {
                         item.getNumber(newNumber);
                         grid.setNumber(newNumber, row, column);
                     } else {
-                        return false;
+                        outputText = OutputMessages.newNumberNotAllowed(newNumber, row, column, item.getPossibleNumbers());
+                        return;
                     }
                 }
             }
@@ -327,7 +333,6 @@ public class SudokuSolver {
             grid.setNumber(newNumber, row, column);
             map.get(changed.getNumberOfPossibleNumbers()).add(changed);
         }
-        return true;
     }
 
     private void sortMap() {

@@ -17,7 +17,7 @@ public class Grid {
         this.gridSize = gridSize;
         startingSudoku = new boolean[gridSize][gridSize];
         outputMessage = "";
-        checkInput();
+        checkInputs(true);
     }
 
     public String getOutputMessage() {
@@ -100,21 +100,59 @@ public class Grid {
         return result;
     }
 
-    public void checkInput() {
+    public void checkInputs(boolean newGrid) {
+        boolean hasNumber = false;
+        outputMessage = "";
         solveAble = false;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 //
-                if (!checkNumberIsValid(grid[i][j], i, j) && grid[i][j] != 0) {
+                if (!checkColumn(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
-                    outputMessage = OutputMessages.numberNotAllowed(grid[i][j], i, j);
+                    outputMessage = OutputMessages.numberNotAllowedInColumn(grid[i][j], i, j);
+                    return;
+                } else if (!checkRow(grid[i][j], i, j) && grid[i][j] != 0) {
+                    solveAble = false;
+                    outputMessage = OutputMessages.numberNotAllowedInRow(grid[i][j], i, j);
+                    return;
+                } else if (!checkBox(grid[i][j], i, j) && grid[i][j] != 0) {
+                    solveAble = false;
+                    outputMessage = OutputMessages.numberNotAllowedInBox(grid[i][j], i, j);
                     return;
                 }
-                if (grid[i][j] != 0) {
+                if (grid[i][j] != 0 && newGrid) {
                     startingSudoku[i][j] = true;
-                    solveAble = true;
+                    hasNumber = true;
                 }
             }
+        }
+        // input has no number
+        if (!hasNumber) {
+            outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
+            solveAble = false;
+        } else {
+            solveAble = true;
+        }
+    }
+
+    public void checkInput(int row, int column) {
+        solveAble = false;
+        if (!checkColumn(grid[row][column], row, column) && grid[row][column] != 0) {
+            solveAble = false;
+            outputMessage = OutputMessages.numberNotAllowedInColumn(grid[row][column], row, column);
+            return;
+        } else if (!checkRow(grid[row][column], row, column) && grid[row][column] != 0) {
+            solveAble = false;
+            outputMessage = OutputMessages.numberNotAllowedInRow(grid[row][column], row, column);
+            return;
+        } else if (!checkBox(grid[row][column], row, column) && grid[row][column] != 0) {
+            solveAble = false;
+            outputMessage = OutputMessages.numberNotAllowedInBox(grid[row][column], row, column);
+            return;
+        }
+        if (grid[row][column] != 0) {
+            startingSudoku[row][column] = true;
+            solveAble = true;
         }
         // input has no number
         if (!solveAble) {
