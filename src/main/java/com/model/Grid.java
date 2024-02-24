@@ -127,7 +127,7 @@ public class Grid {
             }
         }
         // input has no number
-        if (!hasNumber) {
+        if (!hasNumber && newGrid) {
             outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
             solveAble = false;
         } else {

@@ -8,7 +8,7 @@ public class TestSudokuSolver {
 
     @Test
     public void simpleTest() {
-        int[][] sudokuExample = {
+        int[][] unsolvedSudoku = {
                 {0, 0, 2, 0, 0, 4, 9, 0, 0},
                 {0, 4, 5, 9, 0, 0, 0, 0, 1},
                 {0, 0, 1, 6, 0, 0, 0, 2, 0},
@@ -20,7 +20,8 @@ public class TestSudokuSolver {
                 {0, 3, 0, 0, 4, 5, 1, 0, 2}
         };
 
-        Grid grid = new Grid(sudokuExample, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
@@ -33,7 +34,7 @@ public class TestSudokuSolver {
 
     @Test
     public void simpleTestTwo() {
-        int[][] sudokuExample = {
+        int[][] unsolvedSudoku = {
                 {5, 3, 0, 0, 7, 0, 0, 0, 0},
                 {6, 0, 0, 1, 9, 5, 0, 0, 0},
                 {0, 9, 8, 0, 0, 0, 0, 6, 0},
@@ -45,7 +46,8 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 8, 0, 0, 7, 9}
         };
 
-        Grid grid = new Grid(sudokuExample, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
@@ -58,7 +60,7 @@ public class TestSudokuSolver {
 
     @Test
     public void testBacktracking() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {6, 0, 0, 0, 1, 9, 7, 0, 0},
                 {0, 0, 0, 0, 0, 0, 2, 0, 0},
                 {0, 0, 0, 0, 0, 0, 3, 1, 9},
@@ -69,15 +71,14 @@ public class TestSudokuSolver {
                 {0, 0, 5, 3, 4, 8, 0, 0, 0},
                 {8, 0, 7, 0, 0, 0, 0, 0, 0}
         };
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
             solver.nextNumber();
             count++;
         }
-
         SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
         assertTrue(SudokuValidator.isValidSudoku(grid.getGrid(), 9));
@@ -85,7 +86,7 @@ public class TestSudokuSolver {
 
     @Test
     public void testKiller() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {0, 4, 0, 2, 0, 0, 0, 3, 0},
                 {1, 0, 0, 0, 0, 5, 0, 0, 4},
                 {0, 0, 0, 7, 6, 0, 0, 0, 9},
@@ -96,8 +97,8 @@ public class TestSudokuSolver {
                 {7, 0, 9, 0, 4, 1, 0, 0, 0},
                 {0, 0, 6, 0, 0, 0, 0, 0, 8}
         };
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
@@ -105,7 +106,6 @@ public class TestSudokuSolver {
             SudokuValidator.printSudoku(grid.getGrid(), 9);
             count++;
         }
-
         int[][] solvedSudoku = grid.getGrid();
         SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
@@ -114,7 +114,7 @@ public class TestSudokuSolver {
 
     @Test
     public void testHard() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {3, 9, 0, 4, 0, 0, 0, 7, 0},
                 {0, 0, 0, 6, 0, 0, 9, 1, 0},
                 {4, 0, 0, 0, 0, 0, 0, 0, 5},
@@ -125,8 +125,8 @@ public class TestSudokuSolver {
                 {1, 0, 0, 9, 3, 8, 0, 0, 0},
                 {0, 3, 0, 0, 4, 0, 0, 2, 0}
         };
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
@@ -142,7 +142,7 @@ public class TestSudokuSolver {
 
     @Test
     public void testSimpleThree() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {8, 0, 0, 9, 0, 4, 0, 0, 7},
                 {0, 0, 0, 0, 0, 7, 8, 2, 1},
                 {6, 7, 0, 0, 0, 0, 4, 0, 0},
@@ -153,8 +153,8 @@ public class TestSudokuSolver {
                 {0, 0, 5, 0, 0, 0, 3, 7, 0},
                 {0, 1, 0, 0, 8, 0, 9, 4, 5}
         };
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -172,7 +172,7 @@ public class TestSudokuSolver {
 
     @Test
     public void testKillerTwo() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {0, 0, 3, 0, 0, 0, 0, 0, 2},
                 {0, 0, 7, 5, 6, 0, 0, 0, 0},
                 {1, 0, 0, 0, 0, 0, 6, 0, 7},
@@ -183,8 +183,8 @@ public class TestSudokuSolver {
                 {0, 0, 8, 6, 0, 0, 0, 4, 0},
                 {0, 0, 0, 0, 2, 0, 8, 0, 0}
         };
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -202,26 +202,26 @@ public class TestSudokuSolver {
 
     @Test
     public void testHexSimple() {
-        int[][] hexSudoku = {
-                {0, 2, 0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16},
-                {5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4},
-                {9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8},
-                {13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
-                {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1},
-                {6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5},
-                {10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9},
-                {14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13},
-                {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2},
-                {7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6},
-                {11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
-                {15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14},
-                {4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3},
-                {8, 9, 10, 11, 12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7},
-                {12, 13, 14, 15, 16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11},
-                {16, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15},
+        int[][] unsolvedSudoku = {
+                {0, 0, 0, 0, 0, 9, 0, 10, 0, 0, 3, 0, 0, 0, 0, 0},
+                {5, 0, 8, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 13},
+                {0, 0, 0, 0, 0, 0, 15, 0, 16, 0, 0, 14, 0, 0, 3, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 15, 0, 0},
+                {0, 0, 0, 0, 0, 13, 0, 0, 0, 15, 0, 0, 0, 8, 0, 0},
+                {0, 0, 0, 0, 10, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 14},
+                {8, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0},
+                {14, 0, 0, 11, 0, 0, 6, 0, 0, 0, 5, 0, 0, 0, 0, 0},
+                {0, 0, 0, 7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 6, 0, 0, 0, 12, 0},
+                {0, 0, 12, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 8, 0, 0, 0, 0, 7, 0, 0, 0, 0, 10, 0},
+                {0, 4, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 7, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 2, 0, 13, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 0, 8},
+                {0, 13, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 11, 0}
         };
-
-        Grid grid = new Grid(hexSudoku, 16);
+        Grid grid = new Grid(unsolvedSudoku, 16);
+        assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid);
         int count = 0;
         while (solver.isNotDone()) {
@@ -236,8 +236,78 @@ public class TestSudokuSolver {
     }
 
     @Test
-    public void sample() {
-        int[][] sudokuForBacktracking = {
+    public void testHexMedium() {
+        int[][] unsolvedSudoku = {
+                {0, 6, 0, 0, 0, 9, 0, 10, 0, 0, 3, 0, 0, 0, 0, 0},
+                {5, 0, 8, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 13},
+                {0, 0, 0, 0, 0, 0, 15, 0, 16, 0, 0, 14, 0, 0, 3, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 15, 0, 0},
+                {0, 0, 0, 0, 0, 13, 0, 0, 0, 15, 0, 0, 0, 8, 0, 0},
+                {0, 0, 0, 0, 10, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 14},
+                {8, 0, 0, 0, 0, 15, 0, 0, 5, 0, 0, 4, 0, 0, 0, 0},
+                {14, 0, 0, 11, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 7, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 6, 0, 0, 0, 12, 0},
+                {0, 0, 12, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 8, 0, 0, 0, 0, 7, 0, 0, 0, 0, 10, 0},
+                {0, 4, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 7, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 2, 0, 13, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 0, 8},
+                {0, 13, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 11, 0}
+        };
+        Grid grid = new Grid(unsolvedSudoku, 16);
+        assertTrue(grid.isSolveAble());
+        SudokuSolver solver = new SudokuSolver(grid);
+        int count = 0;
+        while (solver.isNotDone()) {
+            solver.nextNumber();
+            count++;
+        }
+
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 16);
+        System.out.println(count);
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 16));
+    }
+
+    @Test
+    public void testHexHard() {
+        int[][] unsolvedSudoku = {
+                {13, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 3, 0, 0, 0, 11},
+                {0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0},
+                {0, 0, 0, 4, 0, 0, 16, 0, 0, 12, 0, 0, 15, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 13, 0, 0},
+                {0, 9, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0},
+                {0, 0, 0, 0, 2, 0, 0, 6, 0, 0, 4, 0, 0, 0, 0, 0},
+                {0, 0, 14, 0, 0, 8, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 10, 0, 9, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0},
+                {0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0},
+                {0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0},
+                {0, 0, 0, 12, 0, 0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 0},
+                {0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {15, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 8, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 8, 0, 0, 0, 0}
+        };
+        Grid grid = new Grid(unsolvedSudoku, 16);
+        assertTrue(grid.isSolveAble());
+        SudokuSolver solver = new SudokuSolver(grid);
+        int count = 0;
+        while (solver.isNotDone()) {
+            solver.nextNumber();
+            count++;
+        }
+
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 16);
+        System.out.println(count);
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 16));
+    }
+
+    @Test
+    public void testHasNoNumber() {
+        int[][] unsolvedSudoku = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -248,25 +318,13 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
-
-
-        Grid grid = new Grid(sudokuForBacktracking, 9);
-        SudokuSolver solver = new SudokuSolver(grid);
-        int count = 0;
-        while (solver.isNotDone()) {
-            solver.nextNumber();
-            count++;
-        }
-
-        int[][] solvedSudoku = grid.getGrid();
-        SudokuValidator.printSudoku(grid.getGrid(), 9);
-        System.out.println(count);
-        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertFalse(grid.isSolveAble());
     }
 
     @Test
     public void testInvalid() {
-        int[][] sudokuForBacktracking = {
+        int[][] unsolvedSudoku = {
                 {1, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 1, 0, 0, 0, 0, 0, 0},
@@ -277,19 +335,7 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
-        Grid grid = new Grid(sudokuForBacktracking, 9);
-        SudokuSolver solver = new SudokuSolver(grid);
-        int count = 0;
-//        while (solver.isNotDone()) {
-//            solver.nextNumber();
-//            SudokuValidator.printSudoku(grid.getGrid(), 9);
-//            count++;
-//        }
-
-        int[][] solvedSudoku = grid.getGrid();
-        SudokuValidator.printSudoku(grid.getGrid(), 9);
-        System.out.println(count);
-       // assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
-        assertTrue(true);
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertFalse(grid.isSolveAble());
     }
 }

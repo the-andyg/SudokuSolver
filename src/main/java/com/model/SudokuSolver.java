@@ -46,9 +46,9 @@ public class SudokuSolver {
         if (!isNotDone()) {
             grid.checkInputs(false);
             if (!grid.isSolveAble()) {
-                outputText = "Fehler! Das Sudoku wurde nicht richtig gelöst!";
+                outputText = OutputMessages.ALGO_FAILED;
             } else {
-                outputText = "Das Sudoku wurde erfolgreich gelöst";
+                outputText = OutputMessages.SUDOKU_SOLVED;
             }
             return;
         }
@@ -59,7 +59,6 @@ public class SudokuSolver {
             return;
         }
         if (checkBoxRowColumn()) {
-            outputText = "Das grüne Feld wurde / die grünen Felder wurden gesetzt, weil in dem 3x3/4x4 Block die gesetzte Zahl nur dort möglich war.";
             return;
         }
         setNextNumber();
@@ -120,7 +119,7 @@ public class SudokuSolver {
                         map.get(x).remove(item);
                         solvedItems.add(item);
                         newFields[item.row][item.column] = true;
-                        System.out.println("[setBoxNumber] setBox: " + item.row + ";" + item.column);
+                        //System.out.println("[setBoxNumber] setBox: " + item.row + ";" + item.column);
                         sortMap();
                         return true;
                     }
@@ -239,13 +238,14 @@ public class SudokuSolver {
 
     private boolean setDistinctNumber() {
         if (!map.get(1).isEmpty()) {
+            boolean count = map.get(1).size() > 1;
             while (!map.get(1).isEmpty()) {
                 MapItem item = map.get(1).get(0);
                 map.get(1).remove(item);
                 solvedItems.add(item);
                 int newNumber = item.getNextNumber();
                 grid.setNumber(newNumber, item.row, item.column);
-                System.out.println("[SetDistinct] Eindeutige Zahl setzen: " + item.row + ";" + item.column + ":" + newNumber);
+                //System.out.println("[SetDistinct] Eindeutige Zahl setzen: " + item.row + ";" + item.column + ":" + newNumber);
                 newFields[item.row][item.column] = true;
             }
             sortMap();
@@ -258,9 +258,9 @@ public class SudokuSolver {
         for (int i = 1; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
                 MapItem item = map.get(i).get(0);
-                System.out.println("[SetNextNumber] Kästchen mit wenigsten Möglichkeiten finden und setzen");
+                //System.out.println("[SetNextNumber] Kästchen mit wenigsten Möglichkeiten finden und setzen");
                 if (item.possibleNumbersIsEmpty()) {
-                    System.out.println("[SetNextNumber] Das gefundene Kästchen kann keine Zahl setzen. Gefundenes Kästchen zurück setzen");
+                    //System.out.println("[SetNextNumber] Das gefundene Kästchen kann keine Zahl setzen. Gefundenes Kästchen zurück setzen");
                     outputText = "Es wurde ein Feld gefunden, bei dem keine Zahl mehr gesetzt werden kann. \n" +
                             "Das rote Feld wurde / die roten Felder wurden zurück gesetzt.";
                     backTracking();
@@ -279,11 +279,11 @@ public class SudokuSolver {
 
     private void backTracking() {
         for (MapItem m : solvedItems) {
-            System.out.println(m.row + ";" + m.column + ": " + m.getPossibleNumbers());
+            //System.out.println(m.row + ";" + m.column + ": " + m.getPossibleNumbers());
         }
         MapItem item = solvedItems.get(solvedItems.size() - 1);
         while (item.possibleNumbersIsEmpty()) {
-            System.out.println("[backTracking] eine zahl zurück gehen, weil keine weitere Möglichkeiten gefunden wurden");
+            //System.out.println("[backTracking] eine zahl zurück gehen, weil keine weitere Möglichkeiten gefunden wurden");
             grid.setNumber(0, item.row, item.column);
             solvedItems.remove(item);
             item.restorePossibleNumbers();
@@ -297,7 +297,7 @@ public class SudokuSolver {
             }
             item = solvedItems.get(solvedItems.size() - 1);
         }
-        System.out.println("[backTracking] Zahl gefunden mit weiterer Option");
+        //System.out.println("[backTracking] Zahl gefunden mit weiterer Option");
         int newNumber = item.getNextNumber();
         removedFields[item.row][item.column] = true;
         grid.setNumber(newNumber, item.row, item.column);
@@ -336,7 +336,7 @@ public class SudokuSolver {
     }
 
     private void sortMap() {
-        System.out.println("[sortMap] Neu sortieren");
+        //System.out.println("[sortMap] Neu sortieren");
         MapItem item;
         for (int i = 2; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
@@ -344,7 +344,7 @@ public class SudokuSolver {
                     item = map.get(i).get(j);
                     item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getAllPossibleNumbers(), item.row, item.column));
                     if (item.possibleNumbersIsEmpty()) {
-                        System.out.println("[sortMap] ein feld ohne Möglichkeiten Backtracking starten" + item.row + ";" + item.column);
+                        //System.out.println("[sortMap] ein feld ohne Möglichkeiten Backtracking starten" + item.row + ";" + item.column);
                         map.get(i).remove(item);
                         item.restorePossibleNumbers();
                         map.get(item.getNumberOfPossibleNumbers()).add(item);
@@ -355,10 +355,10 @@ public class SudokuSolver {
                         map.get(i).remove(item);
                         j--;
                         map.get(item.getNumberOfPossibleNumbers()).add(item);
-                        System.out.println("[sortMap] neu sortiert: " + item.row + ";" + item.column);
+                        //System.out.println("[sortMap] neu sortiert: " + item.row + ";" + item.column);
                     }
                     if (item.getNumberOfPossibleNumbers() == 1) {
-                        System.out.println("[sortMap] neues eindeutiges Feld gefunden");
+                        //System.out.println("[sortMap] neues eindeutiges Feld gefunden");
                         return;
                     }
                 }
