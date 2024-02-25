@@ -202,6 +202,36 @@ public class TestSudokuSolver {
     }
 
     @Test
+    public void testExpert() {
+        int[][] unsolvedSudoku = {
+                {0, 0, 0, 0, 0, 0, 0, 0, 5},
+                {1, 0, 9, 0, 0, 4, 0, 0, 8},
+                {0, 3, 0, 5, 0, 8, 7, 9, 1},
+                {0, 0, 0, 2, 0, 0, 9, 0, 0},
+                {0, 0, 4, 0, 0, 0, 1, 0, 0},
+                {3, 9, 1, 0, 0, 0, 8, 5, 0},
+                {0, 0, 5, 0, 0, 0, 0, 4, 0},
+                {9, 0, 0, 0, 0, 5, 0, 0, 0},
+                {2, 7, 8, 0, 0, 0, 0, 0, 0}
+        };
+        Grid grid = new Grid(unsolvedSudoku, 9);
+        assertTrue(grid.isSolveAble());
+        SudokuSolver solver = new SudokuSolver(grid);
+        int count = 0;
+        final long timeStart = System.currentTimeMillis();
+        while (solver.isNotDone()) {
+            solver.nextNumber();
+            count++;
+        }
+        final long timeEnd = System.currentTimeMillis();
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
+        System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
+    }
+
+    @Test
     public void testHexSimple() {
         int[][] unsolvedSudoku = {
                 {0, 0, 0, 0, 0, 9, 0, 10, 0, 0, 3, 0, 0, 0, 0, 0},

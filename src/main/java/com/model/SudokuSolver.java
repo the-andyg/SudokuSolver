@@ -14,7 +14,9 @@ public class SudokuSolver {
     private String outputText;
     private boolean[][] newFields;
     private boolean[][] removedFields;
-    int numberOfLines;
+    private int numberOfLines;
+    private boolean isSolvable;
+
 
     public SudokuSolver(Grid grid) {
         this.grid = grid;
@@ -24,6 +26,7 @@ public class SudokuSolver {
         numberOfLines = 0;
         createMap();
         outputText = "";
+        isSolvable = true;
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
     }
@@ -52,7 +55,9 @@ public class SudokuSolver {
         outputText = "";
         if (!isNotDone()) {
             grid.checkInputs(false);
-            if (!grid.isSolveAble()) {
+            if (!isSolvable) {
+                outputText = OutputMessages.SUDOKU_NOT_SOLVABLE;
+            } else if (!grid.isSolveAble()) {
                 outputText = OutputMessages.ALGO_FAILED;
             } else {
                 outputText = OutputMessages.SUDOKU_SOLVED;
@@ -253,7 +258,6 @@ public class SudokuSolver {
 
     private boolean setDistinctNumber() {
         if (!map.get(1).isEmpty()) {
-            boolean count = map.get(1).size() > 1;
             while (!map.get(1).isEmpty()) {
                 MapItem item = map.get(1).get(0);
                 map.get(1).remove(item);
@@ -303,6 +307,7 @@ public class SudokuSolver {
             removedFields[item.row][item.column] = true;
             if (solvedItems.isEmpty()) {
                 System.out.println("[backTracking] Sudoku nicht lösbar");
+                isSolvable = false;
                 numbersSearching = 0;
                 return;
             }
@@ -311,10 +316,12 @@ public class SudokuSolver {
         }
         System.out.println("[backTracking] Zahl gefunden mit weiterer Option");
         int newNumber = item.getNextNumber();
-        removedFields[item.row][item.column] = true;
         grid.setNumber(newNumber, item.row, item.column);
-        outputText = OutputMessages.backTracking(count);
         sortMap();
+
+        // For View
+        removedFields[item.row][item.column] = true;
+        outputText = OutputMessages.backTracking(count);
     }
 
     private void deleteOrChangeNumber(int newNumber, int row, int column) {

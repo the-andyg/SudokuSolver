@@ -15,6 +15,7 @@ public class OutputMessages {
     public static final String CHOOSE_AN_EXAMPLE = "Bitte gebe ein Sudoku ein oder wähle einen Schwierigkeitsgrad.";
     public static final String ALGO_FAILED = "Fehler! Das Sudoku wurde nicht richtig gelöst!";
     public static final String SUDOKU_SOLVED = "Das Sudoku wurde erfolgreich gelöst";
+    public static final String SUDOKU_NOT_SOLVABLE = "Das Sudoku ist nicht lösbar!";
 
     public static String numberNotAllowedInRow(int number, int row, int column) {
         row++;
