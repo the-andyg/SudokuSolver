@@ -29,21 +29,21 @@
                             </HBox>
                             <GridPane fx:id="gridPaneDecimal" alignment="CENTER" minHeight="490" minWidth="490"
                                       prefHeight="3000"/>
-                            <Label fx:id="outputDecimal" alignment="CENTER" prefWidth="Infinity"/>
+                            <Label fx:id="outputDecimal" alignment="CENTER" prefWidth="Infinity" wrapText="true"/>
                             <HBox alignment="CENTER">
                                 <padding>
                                     <Insets top="30"/>
                                 </padding>
-                                    <HBox alignment="CENTER_LEFT" prefWidth="3000" spacing="10">
-                                        <Button fx:id="setButtonDecimal" onAction="#getAndCheckGridDecimal"
-                                                text="Zahl/en bestätigen"/>
-                                        <Button onAction="#generateSudokuLayoutDecimal" text="Alle Zahlen löschen"/>
-                                    </HBox>
-                                    <HBox alignment="CENTER_RIGHT" prefWidth="3000" spacing="10.0">
-                                        <Button fx:id="nextNumberDecimal" onAction="#nextNumberDecimal"
-                                                text="Nächste Zahl"/>
-                                        <Button fx:id="solveDecimal" onAction="#solveDecimal" text="Sudoku lösen"/>
-                                    </HBox>
+                                <HBox alignment="CENTER_LEFT" prefWidth="3000" spacing="10">
+                                    <Button fx:id="setButtonDecimal" onAction="#getAndCheckGridDecimal"
+                                            text="Zahl/en bestätigen"/>
+                                    <Button onAction="#generateSudokuLayoutDecimal" text="Alle Zahlen löschen"/>
+                                </HBox>
+                                <HBox alignment="CENTER_RIGHT" prefWidth="3000" spacing="10.0">
+                                    <Button fx:id="nextNumberDecimal" onAction="#nextNumberDecimal"
+                                            text="Nächste Zahl"/>
+                                    <Button fx:id="solveDecimal" onAction="#solveDecimal" text="Sudoku lösen"/>
+                                </HBox>
                             </HBox>
                         </VBox>
                     </content>

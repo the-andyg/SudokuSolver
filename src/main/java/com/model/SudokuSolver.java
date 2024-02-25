@@ -14,18 +14,23 @@ public class SudokuSolver {
     private String outputText;
     private boolean[][] newFields;
     private boolean[][] removedFields;
+    int numberOfLines;
 
     public SudokuSolver(Grid grid) {
         this.grid = grid;
         map = new HashMap<>();
         solvedItems = new ArrayList<>();
         numbersSearching = 0;
+        numberOfLines = 0;
         createMap();
         outputText = "";
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
     }
 
+    public int getNumberOfLines() {
+        return numberOfLines;
+    }
     public String getOutputText() {
         return outputText;
     }
@@ -43,6 +48,7 @@ public class SudokuSolver {
     }
 
     public void nextNumber() {
+        numberOfLines = 0;
         outputText = "";
         if (!isNotDone()) {
             grid.checkInputs(false);
@@ -65,6 +71,7 @@ public class SudokuSolver {
     }
 
     public void checkNewNumbers(int[][] numbers) {
+        numberOfLines = 0;
         outputText = "";
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
@@ -91,6 +98,7 @@ public class SudokuSolver {
                                         grid.setNumber(item.getNumber(numbers[i][j]), item.row, item.column);
                                         solvedItems.add(item);
                                         newFields[item.row][item.column] = true;
+                                        numberOfLines++;
                                         outputText = OutputMessages.valideNumberWithMoreOptions(numbers[i][j], i, j,
                                                 item.getPossibleNumbers(), outputText);
                                         break;
@@ -254,6 +262,7 @@ public class SudokuSolver {
                 grid.setNumber(newNumber, item.row, item.column);
                 System.out.println("[SetDistinct] Eindeutige Zahl setzen: " + item.row + ";" + item.column + ":" + newNumber);
                 newFields[item.row][item.column] = true;
+                numberOfLines++;
                 outputText = OutputMessages.setDistinct(newNumber, item.row, item.column, outputText);
             }
             sortMap();
@@ -318,7 +327,6 @@ public class SudokuSolver {
                     oldNumber = grid.getGrid()[item.row][item.column];
                 } else {
                     if (grid.checkNumberIsValid(newNumber, row, column)) {
-                        item.restorePossibleNumbers();
                         item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getPossibleNumbers(),
                                 item.row, item.column));
                         item.getNumber(newNumber);
@@ -326,6 +334,7 @@ public class SudokuSolver {
                     } else {
                         item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getPossibleNumbers(),
                                 item.row, item.column));
+                        numberOfLines++;
                         outputText = OutputMessages.newNumberNotAllowed(newNumber, row, column,
                                 item.getPossibleNumbers(), outputText);
                         removedFields[item.row][item.column] = true;
@@ -340,6 +349,7 @@ public class SudokuSolver {
             changed.restorePossibleNumbers();
             grid.setNumber(newNumber, row, column);
             map.get(changed.getNumberOfPossibleNumbers()).add(changed);
+            numberOfLines++;
             outputText = OutputMessages.removeNumber(oldNumber, changed.row, changed.column, outputText);
         }
     }
