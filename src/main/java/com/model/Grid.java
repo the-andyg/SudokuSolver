@@ -135,23 +135,23 @@ public class Grid {
         }
     }
 
-    public void checkInput(int row, int column) {
+    public void checkInput(int column, int row) {
         solveAble = false;
-        if (!checkColumn(grid[row][column], row, column) && grid[row][column] != 0) {
+        if (!checkColumn(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInColumn(grid[row][column], row, column);
+            outputMessage = OutputMessages.numberNotAllowedInColumn(grid[column][row], column, row);
             return;
-        } else if (!checkRow(grid[row][column], row, column) && grid[row][column] != 0) {
+        } else if (!checkRow(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInRow(grid[row][column], row, column);
+            outputMessage = OutputMessages.numberNotAllowedInRow(grid[column][row], column, row);
             return;
-        } else if (!checkBlock(grid[row][column], row, column) && grid[row][column] != 0) {
+        } else if (!checkBlock(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInBlock(grid[row][column], row, column);
+            outputMessage = OutputMessages.numberNotAllowedInBlock(grid[column][row], column, row);
             return;
         }
-        if (grid[row][column] != 0) {
-            startingSudoku[row][column] = true;
+        if (grid[column][row] != 0) {
+            startingSudoku[column][row] = true;
             solveAble = true;
         }
         // input has no number

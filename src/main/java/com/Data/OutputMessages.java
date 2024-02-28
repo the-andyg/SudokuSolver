@@ -3,7 +3,6 @@ package com.Data;
 import java.util.List;
 
 public class OutputMessages {
-
     public static final String INIT_TEXT = "Gebe das gewünschte Sudoku ein und bestätige es.";
     public static final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten.";
     public static final String FAIL_TEXT_DECIMAL = "Bitte gebe nur Zahlen von 1 - 9 ein.";
@@ -16,28 +15,28 @@ public class OutputMessages {
     public static final String SUDOKU_SOLVED = "Das Sudoku wurde erfolgreich gelöst";
     public static final String SUDOKU_NOT_SOLVABLE = "Das Sudoku ist nicht lösbar!";
 
-    public static String numberNotAllowedInRow(int number, int row, int column) {
+    public static String numberNotAllowedInRow(int number, int column, int row) {
         row++;
         column++;
         return "Die Zahl " + number + " ist an der Stelle " + column + ";" + row + " nicht erlaubt, " +
                 "weil in der selben Spalte die Zahl bereits vorkommt";
     }
 
-    public static String numberNotAllowedInBlock(int number, int row, int column) {
+    public static String numberNotAllowedInBlock(int number, int column, int row) {
         row++;
         column++;
         return "Die Zahl " + number + " ist an der Stelle " + column + ";" + row + " nicht erlaubt, " +
                 "weil die Zahl bereits in der selben Box vorkommt.";
     }
 
-    public static String numberNotAllowedInColumn(int number, int row, int column) {
+    public static String numberNotAllowedInColumn(int number, int column, int row) {
         row++;
         column++;
         return "Die Zahl " + number + " ist an der Stelle " + column + ";" + row + " nicht erlaubt " +
                 "weil in der selben Reihe die Zahl bereits vorkommt";
     }
 
-    public static String valideNumberWithMoreOptions(int number, int row, int column, List<Integer> numbers, String output) {
+    public static String valideNumberWithMoreOptions(int number, int column, int row, List<Integer> numbers, String output) {
         row++;
         column++;
         if (!output.isEmpty()) {
@@ -52,7 +51,7 @@ public class OutputMessages {
         }
     }
 
-    public static String newNumberNotAllowed(int number, int row, int column, List<Integer> numbers, String output) {
+    public static String newNumberNotAllowed(int number, int column, int row, List<Integer> numbers, String output) {
         row++;
         column++;
         if (!output.isEmpty()) {
@@ -69,7 +68,7 @@ public class OutputMessages {
         }
     }
 
-    public static String setDistinct(int number, int row, int column, String output) {
+    public static String setDistinct(int number, int column, int row, String output) {
         row++;
         column++;
         if (!output.isEmpty()) {
@@ -78,7 +77,7 @@ public class OutputMessages {
         return output + "An der Stelle " + column + ";" + row + " ist nur die " + number + " möglich.";
     }
 
-    public static String removeNumber(int number, int row, int column, String output) {
+    public static String removeNumber(int number, int column, int row, String output) {
         row++;
         column++;
         if (!output.isEmpty()) {
@@ -88,25 +87,23 @@ public class OutputMessages {
                 " wurde entfernt.";
     }
 
-    public static String setBlock(int number, int row, int column) {
+    public static String setBlock(int number, int column, int row) {
         row++;
         column++;
         return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in dem Block gesetzt werden und nicht in den gelben Feldern.";
+                " kann nur dort in dem Block gesetzt werden und nicht in den das gelbe/gelben Feldern.";
     }
 
-    public static String setRow(int number, int row, int column) {
+    public static String setRow(int number, int row) {
         row++;
-        column++;
-        return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in der Spalte gesetzt werden und nicht in den gelben Feldern.";
+        return "In der " + row + ". Reihe kann die" + number +
+                " nur in das grüne Feld eingesetzt werden und nicht in das gelbe/die gelben";
     }
 
-    public static String setColumn(int number, int row, int column) {
-        row++;
+    public static String setColumn(int number, int column) {
         column++;
-        return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in der Reihe gesetzt werden und nicht in den gelben Feldern.";
+        return "In der " + column + ". Spalte kann die" + number +
+                " nur in das grüne Feld eingesetzt werden und nicht in das gelbe/die gelben";
     }
 
     public static String noDistinctNumber(List<Integer> numbers) {

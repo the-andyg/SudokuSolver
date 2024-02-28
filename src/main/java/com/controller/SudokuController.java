@@ -224,20 +224,14 @@ public class SudokuController implements Initializable {
 
     @FXML
     public void solveDecimal() {
-        while (sudokuSolverDecimal.isNotDone()) {
-            sudokuSolverDecimal.nextNumber();
-        }
-        sudokuSolverDecimal.nextNumber();
+        sudokuSolverDecimal.solveSudoku();
         updateGrid(gridPaneDecimal, sudokuSolverDecimal, gridSudokuDecimal);
         setLabel(outputDecimal, sudokuSolverDecimal, sudokuSolverDecimal.getOutputText());
     }
 
     @FXML
     public void solveHex() {
-        while (sudokuSolverHex.isNotDone()) {
-            sudokuSolverHex.nextNumber();
-        }
-        sudokuSolverHex.nextNumber();
+        sudokuSolverHex.solveSudoku();
         updateGrid(gridPaneHex, sudokuSolverHex, gridSudokuHex);
         setLabel(outputHex, sudokuSolverHex, sudokuSolverHex.getOutputText());
     }
@@ -246,8 +240,8 @@ public class SudokuController implements Initializable {
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
                 TextField textField = new TextField();
-                grid.add(textField, i, k);
-                setTextFieldColor(textField, i, k, size);
+                grid.add(textField, k, i);
+                setTextFieldColor(textField, k, i, size);
             }
         }
     }
@@ -284,8 +278,8 @@ public class SudokuController implements Initializable {
     private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku) {
         boolean[][] newFields = sudokuSolver.getNewFields();
         boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
-        boolean[][] startingSudoku = gridSudoku.getStartingSudoku();
         boolean[][] indexFields = sudokuSolver.getIndexFields();
+        boolean[][] startingSudoku = gridSudoku.getStartingSudoku();
         int row = 0;
         int column = 0;
         for (Node node : grid.getChildren()) {

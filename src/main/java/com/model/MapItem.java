@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapItem {
-    public int row;
-    public int column;
+    private int getColumn;
+    private int row;
     private final List<Integer> possibleNumbers;
     private final List<Integer> allPossibleNumbers;
 
-    public MapItem(int row, int column, List<Integer> allPossibleNumbers) {
+    public MapItem(int column, int row, List<Integer> allPossibleNumbers) {
         this.possibleNumbers = new ArrayList<>();
         this.allPossibleNumbers = new ArrayList<>();
+        this.getColumn = column;
         this.row = row;
-        this.column = column;
         this.possibleNumbers.addAll(allPossibleNumbers);
         this.allPossibleNumbers.addAll(allPossibleNumbers);
     }
@@ -37,6 +37,14 @@ public class MapItem {
             index++;
         }
         return 0;
+    }
+
+    public int getColumn() {
+        return getColumn;
+    }
+
+    public int getRow() {
+        return row;
     }
 
     public void addNumber(int number) {
