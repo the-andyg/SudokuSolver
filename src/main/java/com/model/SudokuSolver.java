@@ -14,6 +14,7 @@ public class SudokuSolver {
     private String outputText;
     private boolean[][] newFields;
     private boolean[][] removedFields;
+    private boolean[][] indexFields;
     private int numberOfLines;
     private boolean isSolvable;
 
@@ -29,11 +30,13 @@ public class SudokuSolver {
         isSolvable = true;
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
     }
 
     public int getNumberOfLines() {
         return numberOfLines;
     }
+
     public String getOutputText() {
         return outputText;
     }
@@ -46,44 +49,44 @@ public class SudokuSolver {
         return removedFields;
     }
 
+    public boolean[][] getIndexFields() {
+        return indexFields;
+    }
+
     public boolean isNotDone() {
         return !(solvedItems.size() == numbersSearching);
     }
 
     public void nextNumber() {
-        numberOfLines = 0;
-        outputText = "";
+        setupOutput();
+        // check if Sudoku is done
         if (!isNotDone()) {
-            grid.checkInputs(false);
             if (!isSolvable) {
                 outputText = OutputMessages.SUDOKU_NOT_SOLVABLE;
-            } else if (!grid.isSolveAble()) {
-                outputText = OutputMessages.ALGO_FAILED;
             } else {
                 outputText = OutputMessages.SUDOKU_SOLVED;
             }
             return;
         }
-        newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
-        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        // check if there is a distinct Field
         if (setDistinctNumber()) {
             return;
         }
-        if (checkBoxRowColumn()) {
+        // check if there is a distinct Field in Row, Column or Block
+        if (checkBlockRowColumn()) {
             return;
         }
+        // set a field with multiple opportunities
         setNextNumber();
     }
 
     public void checkNewNumbers(int[][] numbers) {
-        numberOfLines = 0;
-        outputText = "";
-        newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
-        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        setupOutput();
         Grid newGrid = new Grid(numbers, numbers.length);
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers.length; j++) {
                 if (grid.getGrid()[i][j] != 0 && grid.getGrid()[i][j] != numbers[i][j]) {
+                    // old field had already a number
                     deleteOrChangeNumber(numbers[i][j], i, j);
                 } else if (grid.getGrid()[i][j] != numbers[i][j]) {
                     newGrid.checkInput(i, j);
@@ -100,7 +103,7 @@ public class SudokuSolver {
                                         map.get(x).remove(item);
                                         item.reducePossibleNumbers(grid.getNewPossibleNumbers(
                                                 item.getAllPossibleNumbers(), item.row, item.column));
-                                        grid.setNumber(item.getNumber(numbers[i][j]), item.row, item.column);
+                                        grid.setNumber(item.removeNumber(numbers[i][j]), item.row, item.column);
                                         solvedItems.add(item);
                                         newFields[item.row][item.column] = true;
                                         numberOfLines++;
@@ -118,25 +121,35 @@ public class SudokuSolver {
         sortMap();
     }
 
-    private boolean checkBoxRowColumn() {
+    public void solveSudoku() {
+        while (isNotDone()) {
+            nextNumber();
+        }
+
+    }
+
+    private boolean checkBlockRowColumn() {
         for (int x = 1; x <= grid.getGridSize(); x++) {
             if (!map.get(x).isEmpty()) {
                 for (int y = 0; y < map.get(x).size(); y++) {
                     MapItem item = map.get(x).get(y);
-                    int check = checkBoxNumber(item);
+                    // search for distinct field in block
+                    int check = checkBlockNumber(item);
                     if (check == 0) {
+                        // search for distinct field in Row
                         check = checkRowNumber(item);
                     }
                     if (check == 0) {
+                        // search for distinct field in block
                         check = checkColumnNumber(item);
                     }
                     if (check != 0) {
+                        // found distinct field
                         grid.setNumber(check, item.row, item.column);
                         item.clearPossibleNumbers();
                         map.get(x).remove(item);
                         solvedItems.add(item);
                         newFields[item.row][item.column] = true;
-                        System.out.println("[setBoxNumber] setBox: " + item.row + ";" + item.column);
                         sortMap();
                         return true;
                     }
@@ -146,24 +159,30 @@ public class SudokuSolver {
         return false;
     }
 
-    private int checkBoxNumber(MapItem item) {
-        boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
-        int boxSize = (int) Math.sqrt(grid.getGridSize());
+    private int checkBlockNumber(MapItem item) {
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+
+        boolean[] blockNumbers = new boolean[grid.getGridSize() + 1];
         for (int numberOne : item.getPossibleNumbers()) {
-            boxNumbers[numberOne] = true;
+            blockNumbers[numberOne] = true;
         }
-        int localRowOne = item.row - item.row % boxSize;
-        int localColumnOne = item.column - item.column % boxSize;
+
+        int blockSize = (int) Math.sqrt(grid.getGridSize());
+        int localRowOne = item.row - item.row % blockSize;
+        int localColumnOne = item.column - item.column % blockSize;
+
         for (int i = 1; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
-                for (int k = 0; k < map.get(i).size(); k++) {
-                    MapItem itemTwo = map.get(i).get(k);
-                    int localRowTwo = itemTwo.row - itemTwo.row % boxSize;
-                    int localColumnTwo = itemTwo.column - itemTwo.column % boxSize;
+                for (int j = 0; j < map.get(i).size(); j++) {
+                    MapItem itemTwo = map.get(i).get(j);
+                    int localRowTwo = itemTwo.row - itemTwo.row % blockSize;
+                    int localColumnTwo = itemTwo.column - itemTwo.column % blockSize;
                     if (localColumnOne == localColumnTwo && localRowOne == localRowTwo
                             && !(item.column == itemTwo.column && item.row == itemTwo.row)) {
+                        // field is in the same block
+                        indexFields[itemTwo.row][itemTwo.column] = true;
                         for (int numberTwo : itemTwo.getPossibleNumbers()) {
-                            boxNumbers[numberTwo] = false;
+                            blockNumbers[numberTwo] = false;
                         }
                     }
                 }
@@ -171,14 +190,16 @@ public class SudokuSolver {
         }
         int count = 0;
         int result = 0;
-        for (int i = 0; i < boxNumbers.length; i++) {
-            if (boxNumbers[i]) {
+        // count possible numbers
+        for (int i = 0; i < blockNumbers.length; i++) {
+            if (blockNumbers[i]) {
                 count++;
                 result = i;
             }
         }
+        // if more than one number is left return 0
         if (count == 1) {
-            outputText = OutputMessages.setBox(result, item.row, item.column);
+            outputText = OutputMessages.setBlock(result, item.row, item.column);
             return result;
         } else {
             return 0;
@@ -186,10 +207,13 @@ public class SudokuSolver {
     }
 
     private int checkRowNumber(MapItem item) {
-        boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+
+        boolean[] rowNumbers = new boolean[grid.getGridSize() + 1];
         for (int numberOne : item.getPossibleNumbers()) {
-            boxNumbers[numberOne] = true;
+            rowNumbers[numberOne] = true;
         }
+
         // check all leftover numbers
         for (int i = 1; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
@@ -198,8 +222,9 @@ public class SudokuSolver {
                     // check if the item is in the same row
                     if (item.row == itemTwo.row && item.column != itemTwo.column) {
                         // if the item is in the same row set all equal numbers false
+                        indexFields[itemTwo.row][itemTwo.column] = true;
                         for (int numberTwo : itemTwo.getPossibleNumbers()) {
-                            boxNumbers[numberTwo] = false;
+                            rowNumbers[numberTwo] = false;
                         }
                     }
                 }
@@ -207,14 +232,14 @@ public class SudokuSolver {
         }
         int count = 0;
         int result = 0;
-        for (int i = 0; i < boxNumbers.length; i++) {
-            // check if a number is left
-            if (boxNumbers[i]) {
+        // count possible numbers
+        for (int i = 0; i < rowNumbers.length; i++) {
+            if (rowNumbers[i]) {
                 count++;
                 result = i;
             }
         }
-        // if more than one number is left return 0 because it's not unique
+        // if more than one number is left return 0
         if (count == 1) {
             outputText = OutputMessages.setRow(result, item.row, item.column);
             return result;
@@ -224,17 +249,19 @@ public class SudokuSolver {
     }
 
     private int checkColumnNumber(MapItem item) {
-        boolean[] boxNumbers = new boolean[grid.getGridSize() + 1];
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        boolean[] blockNumbers = new boolean[grid.getGridSize() + 1];
         for (int numberOne : item.getPossibleNumbers()) {
-            boxNumbers[numberOne] = true;
+            blockNumbers[numberOne] = true;
         }
         for (int i = 1; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
                 for (int k = 0; k < map.get(i).size(); k++) {
                     MapItem itemTwo = map.get(i).get(k);
                     if (item.column == itemTwo.column && item.row != itemTwo.row) {
+                        indexFields[itemTwo.row][itemTwo.column] = true;
                         for (int numberTwo : itemTwo.getPossibleNumbers()) {
-                            boxNumbers[numberTwo] = false;
+                            blockNumbers[numberTwo] = false;
                         }
                     }
                 }
@@ -242,8 +269,8 @@ public class SudokuSolver {
         }
         int count = 0;
         int result = 0;
-        for (int i = 0; i < boxNumbers.length; i++) {
-            if (boxNumbers[i]) {
+        for (int i = 0; i < blockNumbers.length; i++) {
+            if (blockNumbers[i]) {
                 count++;
                 result = i;
             }
@@ -264,7 +291,6 @@ public class SudokuSolver {
                 solvedItems.add(item);
                 int newNumber = item.getNextNumber();
                 grid.setNumber(newNumber, item.row, item.column);
-                System.out.println("[SetDistinct] Eindeutige Zahl setzen: " + item.row + ";" + item.column + ":" + newNumber);
                 newFields[item.row][item.column] = true;
                 numberOfLines++;
                 outputText = OutputMessages.setDistinct(newNumber, item.row, item.column, outputText);
@@ -275,15 +301,14 @@ public class SudokuSolver {
         return false;
     }
 
+    /**
+     *
+     */
     private void setNextNumber() {
-        for (int i = 1; i <= grid.getGridSize(); i++) {
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        for (int i = 2; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
                 MapItem item = map.get(i).get(0);
-                System.out.println("[SetNextNumber] Kästchen mit wenigsten Möglichkeiten finden und setzen");
-                if (item.possibleNumbersIsEmpty()) {
-                    System.out.println("[SetNextNumber] Das gefundene Kästchen kann keine Zahl setzen. Gefundenes Kästchen zurück setzen");
-                    backTracking();
-                }
                 map.get(i).remove(item);
                 grid.setNumber(item.getNextNumber(), item.row, item.column);
                 solvedItems.add(item);
@@ -295,18 +320,21 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     *
+     */
     private void backTracking() {
         boolean count = false;
         MapItem item = solvedItems.get(solvedItems.size() - 1);
+        // remove items until a field with a different possible number
         while (item.possibleNumbersIsEmpty()) {
-            System.out.println("[backTracking] eine zahl zurück gehen, weil keine weitere Möglichkeiten gefunden wurden");
             grid.setNumber(0, item.row, item.column);
             solvedItems.remove(item);
             item.restorePossibleNumbers();
             map.get(item.getNumberOfPossibleNumbers()).add(item);
             removedFields[item.row][item.column] = true;
             if (solvedItems.isEmpty()) {
-                System.out.println("[backTracking] Sudoku nicht lösbar");
+                // not solvable
                 isSolvable = false;
                 numbersSearching = 0;
                 return;
@@ -314,7 +342,6 @@ public class SudokuSolver {
             item = solvedItems.get(solvedItems.size() - 1);
             count = true;
         }
-        System.out.println("[backTracking] Zahl gefunden mit weiterer Option");
         int newNumber = item.getNextNumber();
         grid.setNumber(newNumber, item.row, item.column);
         sortMap();
@@ -324,23 +351,38 @@ public class SudokuSolver {
         outputText = OutputMessages.backTracking(count);
     }
 
+    /**
+     *
+     * @param newNumber
+     * @param row
+     * @param column
+     */
     private void deleteOrChangeNumber(int newNumber, int row, int column) {
-        int oldNumber = 0;
-        MapItem changed = null;
+        boolean itemFound = false;
         for (MapItem item : solvedItems) {
             if (item.row == row && item.column == column) {
+                int oldNumber = grid.getGrid()[item.row][item.column];
                 if (newNumber == 0) {
-                    changed = item;
-                    oldNumber = grid.getGrid()[item.row][item.column];
+                    // delete old number
+                    solvedItems.remove(item);
+                    item.restorePossibleNumbers();
+                    grid.setNumber(newNumber, row, column);
+                    map.get(item.getNumberOfPossibleNumbers()).add(item);
+                    numberOfLines++;
+                    outputText = OutputMessages.removeNumber(oldNumber, item.row, item.column, outputText);
+                    return;
                 } else {
                     if (grid.checkNumberIsValid(newNumber, row, column)) {
-                        item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getPossibleNumbers(),
-                                item.row, item.column));
-                        item.getNumber(newNumber);
+                        // new number is valid
+                        item.removeNumber(newNumber);
+                        item.addNumber(oldNumber);
                         grid.setNumber(newNumber, row, column);
+                        numberOfLines++;
+                        outputText = OutputMessages.valideNumberWithMoreOptions(
+                                newNumber, item.row, item.column, item.getPossibleNumbers(), outputText);
+                        itemFound = true;
                     } else {
-                        item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getPossibleNumbers(),
-                                item.row, item.column));
+                        // new number is not valid
                         numberOfLines++;
                         outputText = OutputMessages.newNumberNotAllowed(newNumber, row, column,
                                 item.getPossibleNumbers(), outputText);
@@ -348,21 +390,17 @@ public class SudokuSolver {
                         return;
                     }
                 }
-                break;
+            } else if (itemFound) {
+                // reset numbers after changed number
+                item.restorePossibleNumbers();
             }
-        }
-        if (changed != null) {
-            solvedItems.remove(changed);
-            changed.restorePossibleNumbers();
-            grid.setNumber(newNumber, row, column);
-            map.get(changed.getNumberOfPossibleNumbers()).add(changed);
-            numberOfLines++;
-            outputText = OutputMessages.removeNumber(oldNumber, changed.row, changed.column, outputText);
         }
     }
 
+    /**
+     *
+     */
     private void sortMap() {
-        //System.out.println("[sortMap] Neu sortieren");
         MapItem item;
         for (int i = 2; i <= grid.getGridSize(); i++) {
             if (!map.get(i).isEmpty()) {
@@ -371,7 +409,7 @@ public class SudokuSolver {
                     item.reducePossibleNumbers(grid.getNewPossibleNumbers(item.getAllPossibleNumbers(),
                             item.row, item.column));
                     if (item.possibleNumbersIsEmpty()) {
-                        System.out.println("[sortMap] ein feld ohne Möglichkeiten Backtracking starten" + item.row + ";" + item.column);
+                        // backtracking necessary
                         map.get(i).remove(item);
                         item.restorePossibleNumbers();
                         map.get(item.getNumberOfPossibleNumbers()).add(item);
@@ -379,13 +417,13 @@ public class SudokuSolver {
                         return;
                     }
                     if (i != item.getNumberOfPossibleNumbers()) {
+                        // possible numbers reduced
                         map.get(i).remove(item);
                         j--;
                         map.get(item.getNumberOfPossibleNumbers()).add(item);
-                        System.out.println("[sortMap] neu sortiert: " + item.row + ";" + item.column);
                     }
                     if (item.getNumberOfPossibleNumbers() == 1) {
-                        System.out.println("[sortMap] neues eindeutiges Feld gefunden");
+                        // new distinct field, no need to sort more
                         return;
                     }
                 }
@@ -393,8 +431,11 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     *
+     */
     private void createMap() {
-        for (int i = 1; i <= grid.getGridSize(); i++) {
+        for (int i = 0; i <= grid.getGridSize(); i++) {
             map.put(i, new ArrayList<>());
         }
         for (int i = 0; i < grid.getGridSize(); i++) {
@@ -407,5 +448,16 @@ public class SudokuSolver {
                 }
             }
         }
+    }
+
+    /**
+     *
+     */
+    private void setupOutput() {
+        numberOfLines = 0;
+        outputText = "";
+        newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
     }
 }

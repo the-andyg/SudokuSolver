@@ -13,7 +13,6 @@ public class OutputMessages {
     public static final String HARD = "Sehr schweres Sudoku";
     public static final String OWN_SUDOKU = "Eigenes Sudoku eingeben";
     public static final String CHOOSE_AN_EXAMPLE = "Bitte gebe ein Sudoku ein oder wähle einen Schwierigkeitsgrad.";
-    public static final String ALGO_FAILED = "Fehler! Das Sudoku wurde nicht richtig gelöst!";
     public static final String SUDOKU_SOLVED = "Das Sudoku wurde erfolgreich gelöst";
     public static final String SUDOKU_NOT_SOLVABLE = "Das Sudoku ist nicht lösbar!";
 
@@ -24,7 +23,7 @@ public class OutputMessages {
                 "weil in der selben Spalte die Zahl bereits vorkommt";
     }
 
-    public static String numberNotAllowedInBox(int number, int row, int column) {
+    public static String numberNotAllowedInBlock(int number, int row, int column) {
         row++;
         column++;
         return "Die Zahl " + number + " ist an der Stelle " + column + ";" + row + " nicht erlaubt, " +
@@ -89,25 +88,25 @@ public class OutputMessages {
                 " wurde entfernt.";
     }
 
-    public static String setBox(int number, int row, int column) {
+    public static String setBlock(int number, int row, int column) {
         row++;
         column++;
         return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in der Box gesetzt werden.";
+                " kann nur dort in dem Block gesetzt werden und nicht in den gelben Feldern.";
     }
 
     public static String setRow(int number, int row, int column) {
         row++;
         column++;
         return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in der Spalte gesetzt werden.";
+                " kann nur dort in der Spalte gesetzt werden und nicht in den gelben Feldern.";
     }
 
     public static String setColumn(int number, int row, int column) {
         row++;
         column++;
         return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in der Reihe gesetzt werden.";
+                " kann nur dort in der Reihe gesetzt werden und nicht in den gelben Feldern.";
     }
 
     public static String noDistinctNumber(List<Integer> numbers) {
@@ -117,10 +116,10 @@ public class OutputMessages {
 
     public static String backTracking(boolean count) {
         if (count) {
-            return "Es wurde ein Feld gefunden, bei dem keine Zahl mehr gesetzt werden konnte." +
+            return "In das grüne Feld konnte keine Zahl eingesetzt werden, bei dem keine Zahl mehr gesetzt werden konnte." +
                     " Die roten Felder wurden zurück gesetzt.";
         } else {
-            return "Es wurde ein Feld gefunden, bei dem keine Zahl mehr gesetzt werden konnte." +
+            return "\"In das grüne Feld konnte keine Zahl eingesetzt werden, bei dem keine Zahl mehr gesetzt werden konnte." +
                     " Das rote Feld wurde zurück gesetzt.";
         }
     }

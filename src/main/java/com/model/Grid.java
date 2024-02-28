@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Grid {
-    private int[][] grid;
+    private final int[][] grid;
     private final int gridSize;
     private boolean solveAble;
     private final boolean[][] startingSudoku;
@@ -45,7 +45,7 @@ public class Grid {
     }
 
     public boolean checkNumberIsValid(int number, int row, int column) {
-        return checkRow(number, row, column) && checkColumn(number, row, column) && checkBox(number, row, column);
+        return checkRow(number, row, column) && checkColumn(number, row, column) && checkBlock(number, row, column);
     }
 
     private boolean checkRow(int number, int row, int column) {
@@ -66,12 +66,12 @@ public class Grid {
         return true;
     }
 
-    private boolean checkBox(int number, int row, int column) {
-        int boxSize = (int) Math.sqrt(gridSize);
-        int localRow = row - row % boxSize;
-        int localColumn = column - column % boxSize;
-        for (int i = localRow; i < localRow + boxSize; i++) {
-            for (int j = localColumn; j < localColumn + boxSize; j++) {
+    private boolean checkBlock(int number, int row, int column) {
+        int blockSize = (int) Math.sqrt(gridSize);
+        int localRow = row - row % blockSize;
+        int localColumn = column - column % blockSize;
+        for (int i = localRow; i < localRow + blockSize; i++) {
+            for (int j = localColumn; j < localColumn + blockSize; j++) {
                 if (grid[i][j] == number && !(i == row && j == column)) {
                     return false;
                 }
@@ -115,9 +115,9 @@ public class Grid {
                     solveAble = false;
                     outputMessage = OutputMessages.numberNotAllowedInRow(grid[i][j], i, j);
                     return;
-                } else if (!checkBox(grid[i][j], i, j) && grid[i][j] != 0) {
+                } else if (!checkBlock(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
-                    outputMessage = OutputMessages.numberNotAllowedInBox(grid[i][j], i, j);
+                    outputMessage = OutputMessages.numberNotAllowedInBlock(grid[i][j], i, j);
                     return;
                 }
                 if (grid[i][j] != 0 && newGrid) {
@@ -145,9 +145,9 @@ public class Grid {
             solveAble = false;
             outputMessage = OutputMessages.numberNotAllowedInRow(grid[row][column], row, column);
             return;
-        } else if (!checkBox(grid[row][column], row, column) && grid[row][column] != 0) {
+        } else if (!checkBlock(grid[row][column], row, column) && grid[row][column] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInBox(grid[row][column], row, column);
+            outputMessage = OutputMessages.numberNotAllowedInBlock(grid[row][column], row, column);
             return;
         }
         if (grid[row][column] != 0) {

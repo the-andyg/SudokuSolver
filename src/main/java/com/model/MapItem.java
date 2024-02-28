@@ -27,7 +27,7 @@ public class MapItem {
         return result;
     }
 
-    public int getNumber(int number) {
+    public int removeNumber(int number) {
         int index = 0;
         for (int i : this.possibleNumbers) {
             if(i == number) {
@@ -37,6 +37,10 @@ public class MapItem {
             index++;
         }
         return 0;
+    }
+
+    public void addNumber(int number) {
+        possibleNumbers.add(number);
     }
 
     public boolean possibleNumbersIsEmpty() {

@@ -211,7 +211,6 @@ public class SudokuController implements Initializable {
         setButtonDecimal.setDisable(true);
         nextNumberDecimal.setDisable(true);
         solveDecimal.setDisable(true);
-        //setLabel(outputDecimal, sudokuSolverDecimal, OutputMessages.INIT_TEXT);
     }
 
     @FXML
@@ -221,7 +220,6 @@ public class SudokuController implements Initializable {
         setButtonHex.setDisable(true);
         nextNumberHex.setDisable(true);
         solveHex.setDisable(true);
-        //setLabel(outputHex, sudokuSolverHex, OutputMessages.INIT_TEXT);
     }
 
     @FXML
@@ -287,6 +285,7 @@ public class SudokuController implements Initializable {
         boolean[][] newFields = sudokuSolver.getNewFields();
         boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
         boolean[][] startingSudoku = gridSudoku.getStartingSudoku();
+        boolean[][] indexFields = sudokuSolver.getIndexFields();
         int row = 0;
         int column = 0;
         for (Node node : grid.getChildren()) {
@@ -305,6 +304,9 @@ public class SudokuController implements Initializable {
                 if (startingSudoku[row][column % gridSudoku.getGridSize()]) {
                     textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
                     textField.setDisable(true);
+                }
+                if (indexFields[row][column % gridSudoku.getGridSize()]) {
+                    textField.setStyle("-fx-background-color: yellow;");
                 }
                 if (newFields[row][column % gridSudoku.getGridSize()]) {
                     textField.setStyle("-fx-background-color: green;");
