@@ -24,13 +24,9 @@ public class SudokuSolver {
         map = new HashMap<>();
         solvedItems = new ArrayList<>();
         numbersSearching = 0;
-        numberOfLines = 0;
-        createMap();
-        outputText = "";
         isSolvable = true;
-        newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
-        removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
-        indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        createMap();
+        setupOutput();
     }
 
     public int getNumberOfLines() {

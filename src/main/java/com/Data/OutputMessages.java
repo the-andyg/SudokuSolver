@@ -4,7 +4,8 @@ import java.util.List;
 
 public class OutputMessages {
     public static final String INIT_TEXT = "Gebe das gewünschte Sudoku ein und bestätige es.";
-    public static final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten.";
+    public static final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten" +
+            " oder gebe Zahlen in das Sudoku ein und Bestätige diese.";
     public static final String FAIL_TEXT_DECIMAL = "Bitte gebe nur Zahlen von 1 - 9 ein.";
     public static final String FAIL_TEXT_HEX = "Bitte gebe nur Zahlen von 1 - 9 ein.";
     public static final String EASY = "Einfaches Sudoku";

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapItem {
-    private int getColumn;
-    private int row;
+    private final int getColumn;
+    private final int row;
     private final List<Integer> possibleNumbers;
     private final List<Integer> allPossibleNumbers;
 
