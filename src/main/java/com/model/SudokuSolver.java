@@ -16,6 +16,7 @@ public class SudokuSolver {
     private boolean[][] newFields;
     private boolean[][] removedFields;
     private boolean[][] indexFields;
+    private int [][] temporaryNumbers;
     private int numberOfLines;
     private boolean isSolvable;
     private final SudokuController sudokuController;
@@ -55,6 +56,10 @@ public class SudokuSolver {
         return !(solvedItems.size() == numbersSearching);
     }
 
+    public int[][] getTemporaryNumbers() {
+        return temporaryNumbers;
+    }
+
     private void checkGrid() {
         grid.checkInputs(true);
         if (!grid.isSolveAble()) {
@@ -66,6 +71,8 @@ public class SudokuSolver {
     }
 
     public void checkNewGrid(int[][] newGrid) {
+        grid.clearSudoku();
+        setupOutput();
         Grid grid = new Grid(newGrid, this.grid.getGridSize());
         if (grid.isSolveAble()) {
             setupOutput();
@@ -81,6 +88,7 @@ public class SudokuSolver {
 
     public void clearSudoku() {
         grid.clearSudoku();
+        createMap();
         setupOutput();
         outputText = OutputMessages.CLEAR_SUDOKU;
         update();
@@ -141,10 +149,14 @@ public class SudokuSolver {
                     // old field had already a number
                     deleteOrChangeNumber(numbers[i][j], i, j, newGrid);
                 } else if (grid.getGrid()[i][j] != numbers[i][j]) {
-                    newGrid.checkInput(i, j);
-                    if (!newGrid.isSolveAble()) {
-                        outputText = newGrid.getOutputMessage();
+                    // it's a new number
+                    if (!newGrid.checkInput(i, j)) {
+                        // number temporary saved
+                        temporaryNumbers[i][j] = numbers[i][j];
                         removedFields[i][j] = true;
+                        //feedback
+                        numberOfLines++;
+                        outputText = OutputMessages.builder(outputText, newGrid.getOutputMessage());
                     } else {
                         setNewNumber(i, j, numbers[i][j]);
                     }
@@ -493,6 +505,7 @@ public class SudokuSolver {
      *
      */
     private void createMap() {
+        solvedItems.clear();
         numbersSearching = 0;
         for (int i = 0; i <= grid.getGridSize(); i++) {
             map.put(i, new ArrayList<>());
@@ -518,5 +531,6 @@ public class SudokuSolver {
         newFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         removedFields = new boolean[grid.getGridSize()][grid.getGridSize()];
         indexFields = new boolean[grid.getGridSize()][grid.getGridSize()];
+        temporaryNumbers = new int[grid.getGridSize()][grid.getGridSize()];
     }
 }

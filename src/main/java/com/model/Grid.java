@@ -144,20 +144,20 @@ public class Grid {
         }
     }
 
-    public void checkInput(int column, int row) {
+    public boolean checkInput(int column, int row) {
         solveAble = false;
         if (!checkColumn(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
             outputMessage = OutputMessages.numberNotAllowedInColumn(grid[column][row], column, row);
-            return;
+            return false;
         } else if (!checkRow(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
             outputMessage = OutputMessages.numberNotAllowedInRow(grid[column][row], column, row);
-            return;
+            return false;
         } else if (!checkBlock(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
             outputMessage = OutputMessages.numberNotAllowedInBlock(grid[column][row], column, row);
-            return;
+            return false;
         }
         if (grid[column][row] != 0) {
             startingSudoku[column][row] = true;
@@ -166,6 +166,8 @@ public class Grid {
         // input has no number
         if (!solveAble) {
             outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
+            return false;
         }
+        return true;
     }
 }

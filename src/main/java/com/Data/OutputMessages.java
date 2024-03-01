@@ -123,4 +123,12 @@ public class OutputMessages {
                     " Das rote Feld wurde zurück gesetzt.";
         }
     }
+
+    public static String builder(String output, String newOutput) {
+        if (output.isEmpty()) {
+            return newOutput;
+        } else {
+            return output + "\n" + newOutput;
+        }
+    }
 }
