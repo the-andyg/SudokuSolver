@@ -44,35 +44,44 @@ public class Grid {
         return gridSize;
     }
 
-    public boolean checkNumberIsValid(int number, int row, int column) {
-        return checkRow(number, row, column) && checkColumn(number, row, column) && checkBlock(number, row, column);
+    public void clearSudoku() {
+        for (int x = 0; x < gridSize; x++) {
+            for (int y = 0; y < gridSize; y++) {
+                grid[x][y] = 0;
+                startingSudoku[x][y] = false;
+            }
+        }
     }
 
-    private boolean checkRow(int number, int row, int column) {
+    public boolean checkNumberIsValid(int number, int column, int row) {
+        return checkRow(number, column, row) && checkColumn(number, column, row) && checkBlock(number, column, row);
+    }
+
+    private boolean checkRow(int number, int column, int row) {
         for (int i = 0; i < gridSize; i++) {
-            if (grid[row][i] == number && i != column) {
+            if (grid[i][row] == number && i != column) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkColumn(int number, int row, int column) {
+    private boolean checkColumn(int number, int column, int row) {
         for (int i = 0; i < gridSize; i++) {
-            if (grid[i][column] == number && i != row) {
+            if (grid[column][i] == number && i != row) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkBlock(int number, int row, int column) {
+    private boolean checkBlock(int number, int column, int row) {
         int blockSize = (int) Math.sqrt(gridSize);
         int localRow = row - row % blockSize;
         int localColumn = column - column % blockSize;
-        for (int i = localRow; i < localRow + blockSize; i++) {
-            for (int j = localColumn; j < localColumn + blockSize; j++) {
-                if (grid[i][j] == number && !(i == row && j == column)) {
+        for (int i = localColumn; i < localColumn + blockSize; i++) {
+            for (int j = localRow; j < localRow + blockSize; j++) {
+                if (grid[i][j] == number && !(i == column && j == row)) {
                     return false;
                 }
             }
@@ -80,20 +89,20 @@ public class Grid {
         return true;
     }
 
-    public List<Integer> getPossibleNumbers(int row, int column) {
+    public List<Integer> getPossibleNumbers(int column, int row) {
         List<Integer> possibleNumbers = new ArrayList<>();
         for (int i = 1; i <= gridSize; i++) {
-            if (checkNumberIsValid(i, row, column)) {
+            if (checkNumberIsValid(i, column, row)) {
                 possibleNumbers.add(i);
             }
         }
         return possibleNumbers;
     }
 
-    public List<Integer> getNewPossibleNumbers(List<Integer> numbers, int row, int column) {
+    public List<Integer> getNewPossibleNumbers(List<Integer> numbers, int column, int row) {
         List<Integer> result = new ArrayList<>();
         for (int number : numbers) {
-            if (checkNumberIsValid(number, row, column)) {
+            if (checkNumberIsValid(number, column, row)) {
                 result.add(number);
             }
         }

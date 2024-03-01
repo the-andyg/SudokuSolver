@@ -1,3 +1,4 @@
+import com.controller.SudokuController;
 import com.model.Grid;
 import com.model.SudokuSolver;
 import org.junit.Test;
@@ -22,10 +23,10 @@ public class TestSudokuSolver {
 
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         Grid checkGrid = new Grid(grid.getGrid(), grid.getGridSize());
@@ -49,10 +50,10 @@ public class TestSudokuSolver {
 
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         assertTrue(SudokuValidator.isValidSudoku(grid.getGrid(), 9));
@@ -74,10 +75,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         SudokuValidator.printSudoku(grid.getGrid(), 9);
@@ -100,10 +101,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             SudokuValidator.printSudoku(grid.getGrid(), 9);
             count++;
         }
@@ -128,10 +129,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
 
@@ -156,11 +157,11 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         final long timeEnd = System.currentTimeMillis();
@@ -186,11 +187,11 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         final long timeEnd = System.currentTimeMillis();
@@ -216,11 +217,11 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
         final long timeEnd = System.currentTimeMillis();
@@ -253,10 +254,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
 
@@ -288,10 +289,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
 
@@ -323,10 +324,10 @@ public class TestSudokuSolver {
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
         assertTrue(grid.isSolveAble());
-        SudokuSolver solver = new SudokuSolver(grid);
+        SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         while (solver.isNotDone()) {
-            solver.nextNumber();
+            solver.nextNumber(true);
             count++;
         }
 

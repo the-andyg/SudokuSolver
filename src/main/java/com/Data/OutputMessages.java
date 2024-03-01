@@ -15,6 +15,7 @@ public class OutputMessages {
     public static final String CHOOSE_AN_EXAMPLE = "Bitte gebe ein Sudoku ein oder wähle einen Schwierigkeitsgrad.";
     public static final String SUDOKU_SOLVED = "Das Sudoku wurde erfolgreich gelöst";
     public static final String SUDOKU_NOT_SOLVABLE = "Das Sudoku ist nicht lösbar!";
+    public static final String CLEAR_SUDOKU = "Alle Zahlen wurden gelöscht.";
 
     public static String numberNotAllowedInRow(int number, int column, int row) {
         row++;
@@ -113,11 +114,12 @@ public class OutputMessages {
     }
 
     public static String backTracking(boolean count) {
+
         if (count) {
-            return "In das grüne Feld konnte keine Zahl eingesetzt werden, bei dem keine Zahl mehr gesetzt werden konnte." +
+            return  "Es wurde ein Feld gefunden, in das keine Zahl gesetzt werden konnte." +
                     " Die roten Felder wurden zurück gesetzt.";
         } else {
-            return "\"In das grüne Feld konnte keine Zahl eingesetzt werden, bei dem keine Zahl mehr gesetzt werden konnte." +
+            return  "Es wurde ein Feld gefunden, in das keine Zahl gesetzt werden konnte." +
                     " Das rote Feld wurde zurück gesetzt.";
         }
     }
