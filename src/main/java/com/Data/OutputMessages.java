@@ -93,19 +93,19 @@ public class OutputMessages {
         row++;
         column++;
         return "Die Zahl " + number + " an der Stelle " + column + ";" + row +
-                " kann nur dort in dem Block gesetzt werden und nicht in den das gelbe/gelben Feldern.";
+                " kann nur dort in dem Block gesetzt werden und nicht in das gelbe Zelle / die gelben Zellen.";
     }
 
     public static String setRow(int number, int row) {
         row++;
         return "In der " + row + ". Reihe kann die" + number +
-                " nur in das grüne Feld eingesetzt werden und nicht in das gelbe/die gelben";
+                " nur in die grüne Zelle eingesetzt werden und nicht in das gelbe Zelle / die gelben Zellen.";
     }
 
     public static String setColumn(int number, int column) {
         column++;
         return "In der " + column + ". Spalte kann die" + number +
-                " nur in das grüne Feld eingesetzt werden und nicht in das gelbe/die gelben";
+                " nur in die grüne Zelle eingesetzt werden und nicht in das gelbe Zelle / die gelben Zellen.";
     }
 
     public static String noDistinctNumber(List<Integer> numbers) {
@@ -116,11 +116,11 @@ public class OutputMessages {
     public static String backTracking(boolean count) {
 
         if (count) {
-            return  "Es wurde ein Feld gefunden, in das keine Zahl gesetzt werden konnte." +
-                    " Die roten Felder wurden zurück gesetzt.";
+            return  "Es wurde eine Zelle gefunden, in das keine Zahl gesetzt werden konnte." +
+                    " Die roten Zellen wurden zurück gesetzt.";
         } else {
-            return  "Es wurde ein Feld gefunden, in das keine Zahl gesetzt werden konnte." +
-                    " Das rote Feld wurde zurück gesetzt.";
+            return  "Es wurde eine Zelle gefunden, in das keine Zahl gesetzt werden konnte." +
+                    " Die rote Zelle wurde zurück gesetzt.";
         }
     }
 

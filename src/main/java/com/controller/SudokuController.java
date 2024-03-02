@@ -245,11 +245,11 @@ public class SudokuController implements Initializable {
      * @param gridSudoku
      */
     private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku) {
-        boolean[][] newFields = sudokuSolver.getNewFields();
-        boolean[][] removedFields = sudokuSolver.getRemovedFieldsFields();
-        boolean[][] indexFields = sudokuSolver.getIndexFields();
+        boolean[][] newCells = sudokuSolver.getNewCells();
+        boolean[][] removedCells = sudokuSolver.getRemovedCells();
+        boolean[][] indexCells = sudokuSolver.getIndexCells();
         boolean[][] startingSudoku = gridSudoku.getStartingSudoku();
-        int[][] temporaryNumbers = sudokuSolver.getTemporaryNumbers();
+        int[][] temporaryCells = sudokuSolver.getTemporaryCells();
         int row = 0;
         int column = 0;
         for (Node node : grid.getChildren()) {
@@ -262,8 +262,8 @@ public class SudokuController implements Initializable {
                 setTextFieldColor(textField, row, column % gridSudoku.getGridSize(), gridSudoku.getGridSize());
                 if (number != 0) {
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()]));
-                } else if (temporaryNumbers[row][column % gridSudoku.getGridSize()] != 0) {
-                    textField.setText(Integer.toString(temporaryNumbers[row][column % gridSudoku.getGridSize()]));
+                } else if (temporaryCells[row][column % gridSudoku.getGridSize()] != 0) {
+                    textField.setText(Integer.toString(temporaryCells[row][column % gridSudoku.getGridSize()]));
                 } else {
                     textField.setText("");
                 }
@@ -271,12 +271,12 @@ public class SudokuController implements Initializable {
                     textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
                     textField.setDisable(true);
                 }
-                if (indexFields[row][column % gridSudoku.getGridSize()]) {
+                if (indexCells[row][column % gridSudoku.getGridSize()]) {
                     textField.setStyle("-fx-background-color: yellow;");
                 }
-                if (newFields[row][column % gridSudoku.getGridSize()]) {
+                if (newCells[row][column % gridSudoku.getGridSize()]) {
                     textField.setStyle("-fx-background-color: green;");
-                } else if (removedFields[row][column % gridSudoku.getGridSize()]) {
+                } else if (removedCells[row][column % gridSudoku.getGridSize()]) {
                     textField.setStyle("-fx-background-color: red;");
                 }
             }

@@ -3,16 +3,16 @@ package com.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapItem {
-    private final int getColumn;
+public class Cell {
+    private final int column;
     private final int row;
     private final List<Integer> possibleNumbers;
     private final List<Integer> allPossibleNumbers;
 
-    public MapItem(int column, int row, List<Integer> allPossibleNumbers) {
+    public Cell(int column, int row, List<Integer> allPossibleNumbers) {
         this.possibleNumbers = new ArrayList<>();
         this.allPossibleNumbers = new ArrayList<>();
-        this.getColumn = column;
+        this.column = column;
         this.row = row;
         this.possibleNumbers.addAll(allPossibleNumbers);
         this.allPossibleNumbers.addAll(allPossibleNumbers);
@@ -40,15 +40,11 @@ public class MapItem {
     }
 
     public int getColumn() {
-        return getColumn;
+        return column;
     }
 
     public int getRow() {
         return row;
-    }
-
-    public void addNumber(int number) {
-        possibleNumbers.add(number);
     }
 
     public boolean possibleNumbersIsEmpty() {
@@ -72,7 +68,7 @@ public class MapItem {
         return possibleNumbers.size();
     }
 
-    public void restorePossibleNumbers() {
+    public void resetPossibleNumbers() {
         possibleNumbers.clear();
         possibleNumbers.addAll(allPossibleNumbers);
     }
