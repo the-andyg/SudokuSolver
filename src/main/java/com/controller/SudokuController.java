@@ -261,14 +261,16 @@ public class SudokuController implements Initializable {
                 int number = gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()];
                 setTextFieldColor(textField, row, column % gridSudoku.getGridSize(), gridSudoku.getGridSize());
                 if (number != 0) {
+                    textField.clear();
                     textField.setText(Integer.toString(gridSudoku.getGrid()[row][column % gridSudoku.getGridSize()]));
                 } else if (temporaryCells[row][column % gridSudoku.getGridSize()] != 0) {
+                    textField.clear();
                     textField.setText(Integer.toString(temporaryCells[row][column % gridSudoku.getGridSize()]));
                 } else {
-                    textField.setText("");
+                    textField.clear();
                 }
                 if (startingSudoku[row][column % gridSudoku.getGridSize()]) {
-                    textField.setStyle(textField.getStyle() + "-fx-font-weight: bold; -fx-font-size: 20px;");
+                    textField.setStyle(textField.getStyle() + "-fx-font-weight: bold;");
                     textField.setDisable(true);
                 }
                 if (indexCells[row][column % gridSudoku.getGridSize()]) {
@@ -344,25 +346,25 @@ public class SudokuController implements Initializable {
 
     private void setUpButtonDecimal(boolean isSolvable) {
         if (nextNumberDecimal != null) {
-            nextNumberDecimal.setDisable(!isSolvable);
+            nextNumberDecimal.setDisable(isSolvable);
         }
         if (solveDecimal != null) {
-            solveDecimal.setDisable(!isSolvable);
+            solveDecimal.setDisable(isSolvable);
         }
         if (setButtonDecimal != null) {
-            setButtonDecimal.setDisable(!isSolvable);
+            setButtonDecimal.setDisable(isSolvable);
         }
     }
 
     private void setUpButtonHex(boolean isSolvable) {
         if (nextNumberHex != null) {
-            nextNumberHex.setDisable(!isSolvable);
+            nextNumberHex.setDisable(isSolvable);
         }
         if (solveHex != null) {
-            solveHex.setDisable(!isSolvable);
+            solveHex.setDisable(isSolvable);
         }
         if (setButtonHex != null) {
-            setButtonHex.setDisable(!isSolvable);
+            setButtonHex.setDisable(isSolvable);
         }
     }
 }

@@ -37,7 +37,7 @@ public class SudokuSolver {
     }
 
     private void update() {
-        sudokuController.update(grid.getGridSize(), feedback, grid, grid.isSolveAble());
+        sudokuController.update(grid.getGridSize(), feedback, grid, !grid.isSolveAble());
     }
 
     public int getNumberOfLines() {

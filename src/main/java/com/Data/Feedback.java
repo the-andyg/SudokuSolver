@@ -117,10 +117,10 @@ public class Feedback {
 
         if (count) {
             return  "Es wurde eine Zelle gefunden, in das keine Zahl gesetzt werden konnte." +
-                    " Die roten Zellen wurden zurück gesetzt.";
+                    " Die roten Zellen wurden zurückgesetzt.";
         } else {
             return  "Es wurde eine Zelle gefunden, in das keine Zahl gesetzt werden konnte." +
-                    " Die rote Zelle wurde zurück gesetzt.";
+                    " Die rote Zelle wurde zurückgesetzt.";
         }
     }
 
