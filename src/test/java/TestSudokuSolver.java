@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 public class TestSudokuSolver {
 
     @Test
-    public void simpleTest() {
+    public void testEasy() {
         int[][] unsolvedSudoku = {
                 {0, 0, 2, 0, 0, 4, 9, 0, 0},
                 {0, 4, 5, 9, 0, 0, 0, 0, 1},
@@ -25,17 +25,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-        Grid checkGrid = new Grid(grid.getGrid(), grid.getGridSize());
-        assertTrue(checkGrid.isSolveAble());
+        final long timeEnd = System.currentTimeMillis();
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
 
     @Test
-    public void simpleTestTwo() {
+    public void testEasyTwo() {
         int[][] unsolvedSudoku = {
                 {5, 3, 0, 0, 7, 0, 0, 0, 0},
                 {6, 0, 0, 1, 9, 5, 0, 0, 0},
@@ -52,16 +56,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-        assertTrue(SudokuValidator.isValidSudoku(grid.getGrid(), 9));
+        final long timeEnd = System.currentTimeMillis();
+        int[][] solvedSudoku = grid.getGrid();
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
 
     @Test
-    public void testBacktracking() {
+    public void testEasyThree() {
         int[][] unsolvedSudoku = {
                 {6, 0, 0, 0, 1, 9, 7, 0, 0},
                 {0, 0, 0, 0, 0, 0, 2, 0, 0},
@@ -77,17 +86,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
+        final long timeEnd = System.currentTimeMillis();
+        int[][] solvedSudoku = grid.getGrid();
         SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
-        assertTrue(SudokuValidator.isValidSudoku(grid.getGrid(), 9));
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
+        assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
 
     @Test
-    public void testKiller() {
+    public void testIntermediate() {
         int[][] unsolvedSudoku = {
                 {0, 4, 0, 2, 0, 0, 0, 3, 0},
                 {1, 0, 0, 0, 0, 5, 0, 0, 4},
@@ -103,19 +116,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
-            SudokuValidator.printSudoku(grid.getGrid(), 9);
             count++;
         }
+        final long timeEnd = System.currentTimeMillis();
         int[][] solvedSudoku = grid.getGrid();
         SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
 
     @Test
-    public void testHard() {
+    public void testIntermediateTwo() {
         int[][] unsolvedSudoku = {
                 {3, 9, 0, 4, 0, 0, 0, 7, 0},
                 {0, 0, 0, 6, 0, 0, 9, 1, 0},
@@ -131,19 +146,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-
+        final long timeEnd = System.currentTimeMillis();
         int[][] solvedSudoku = grid.getGrid();
         SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 9));
     }
 
     @Test
-    public void testSimpleThree() {
+    public void testEasyFour() {
         int[][] unsolvedSudoku = {
                 {8, 0, 0, 9, 0, 4, 0, 0, 7},
                 {0, 0, 0, 0, 0, 7, 8, 2, 1},
@@ -173,7 +190,7 @@ public class TestSudokuSolver {
     }
 
     @Test
-    public void testKillerTwo() {
+    public void testExpert() {
         int[][] unsolvedSudoku = {
                 {0, 0, 3, 0, 0, 0, 0, 0, 2},
                 {0, 0, 7, 5, 6, 0, 0, 0, 0},
@@ -203,7 +220,7 @@ public class TestSudokuSolver {
     }
 
     @Test
-    public void testExpert() {
+    public void testExpertTwo() {
         int[][] unsolvedSudoku = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 5},
                 {1, 0, 9, 0, 0, 4, 0, 0, 8},
@@ -233,7 +250,7 @@ public class TestSudokuSolver {
     }
 
     @Test
-    public void testHexSimple() {
+    public void testHexEasy() {
         int[][] unsolvedSudoku = {
                 {0, 0, 0, 0, 0, 9, 0, 10, 0, 0, 3, 0, 0, 0, 0, 0},
                 {5, 0, 8, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 13},
@@ -256,14 +273,16 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-
+        final long timeEnd = System.currentTimeMillis();
         int[][] solvedSudoku = grid.getGrid();
-        SudokuValidator.printSudoku(grid.getGrid(), 16);
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 16));
     }
 
@@ -291,19 +310,21 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-
+        final long timeEnd = System.currentTimeMillis();
         int[][] solvedSudoku = grid.getGrid();
-        SudokuValidator.printSudoku(grid.getGrid(), 16);
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 16));
     }
 
     @Test
-    public void testHexHard() {
+    public void testHexExpert() {
         int[][] unsolvedSudoku = {
                 {13, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 3, 0, 0, 0, 11},
                 {0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16, 0},
@@ -326,14 +347,16 @@ public class TestSudokuSolver {
         assertTrue(grid.isSolveAble());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
+        final long timeStart = System.currentTimeMillis();
         while (solver.isNotDone()) {
             solver.nextNumber(true);
             count++;
         }
-
+        final long timeEnd = System.currentTimeMillis();
         int[][] solvedSudoku = grid.getGrid();
-        SudokuValidator.printSudoku(grid.getGrid(), 16);
+        SudokuValidator.printSudoku(grid.getGrid(), 9);
         System.out.println(count);
+        System.out.println("Verlaufszeit der Schleife: " + (timeEnd - timeStart) + " Millisek.");
         assertTrue(SudokuValidator.isValidSudoku(solvedSudoku, 16));
     }
 

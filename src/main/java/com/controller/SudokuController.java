@@ -312,7 +312,9 @@ public class SudokuController implements Initializable {
             int height = 30 + (Math.max(solver.getNumberOfLines() - 1, 0)) * 20;
             label.setStyle("-fx-min-height: " + height);
         }
-        label.setText(output);
+        if (label != null) {
+            label.setText(output);
+        }
     }
 
     /**
@@ -340,15 +342,27 @@ public class SudokuController implements Initializable {
         }
     }
 
-    private void setUpButtonDecimal(boolean value) {
-        nextNumberDecimal.setDisable(value);
-        solveDecimal.setDisable(value);
-        setButtonDecimal.setDisable(value);
+    private void setUpButtonDecimal(boolean isSolvable) {
+        if (nextNumberDecimal != null) {
+            nextNumberDecimal.setDisable(!isSolvable);
+        }
+        if (solveDecimal != null) {
+            solveDecimal.setDisable(!isSolvable);
+        }
+        if (setButtonDecimal != null) {
+            setButtonDecimal.setDisable(!isSolvable);
+        }
     }
 
-    private void setUpButtonHex(boolean value) {
-        nextNumberHex.setDisable(value);
-        solveHex.setDisable(value);
-        setButtonHex.setDisable(value);
+    private void setUpButtonHex(boolean isSolvable) {
+        if (nextNumberHex != null) {
+            nextNumberHex.setDisable(!isSolvable);
+        }
+        if (solveHex != null) {
+            solveHex.setDisable(!isSolvable);
+        }
+        if (setButtonHex != null) {
+            setButtonHex.setDisable(!isSolvable);
+        }
     }
 }

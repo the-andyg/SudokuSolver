@@ -16,7 +16,7 @@ public class SudokuSolver {
     private boolean[][] newCells;
     private boolean[][] removedCells;
     private boolean[][] indexCells;
-    private int [][] temporaryCells;
+    private int[][] temporaryCells;
     private int numberOfLines;
     private boolean isSolvable;
     private final SudokuController sudokuController;
@@ -33,7 +33,7 @@ public class SudokuSolver {
     }
 
     private void update() {
-        sudokuController.update(grid.getGridSize(), outputText, grid, !grid.isSolveAble());
+        sudokuController.update(grid.getGridSize(), outputText, grid, grid.isSolveAble());
     }
 
     public int getNumberOfLines() {
