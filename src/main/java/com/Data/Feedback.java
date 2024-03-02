@@ -2,7 +2,7 @@ package com.Data;
 
 import java.util.List;
 
-public class OutputMessages {
+public class Feedback {
     public static final String INIT_TEXT = "Gebe das gewünschte Sudoku ein und bestätige es.";
     public static final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten" +
             " oder gebe Zahlen in das Sudoku ein und Bestätige diese.";
@@ -38,54 +38,54 @@ public class OutputMessages {
                 "weil in der selben Reihe die Zahl bereits vorkommt";
     }
 
-    public static String valideNumberWithMoreOptions(int number, int column, int row, List<Integer> numbers, String output) {
+    public static String valideNumberWithMoreOptions(int number, int column, int row, List<Integer> numbers, String feedback) {
         row++;
         column++;
-        if (!output.isEmpty()) {
-            output += "\n";
+        if (!feedback.isEmpty()) {
+            feedback += "\n";
         }
         if (numbers.isEmpty()) {
-            return output + "Die Zahl " + number + " ist an der Stelle " + column + ";" + row +
+            return feedback + "Die Zahl " + number + " ist an der Stelle " + column + ";" + row +
                     " ist richtig und hatte keine weiteren Möglichkeiten.";
         } else {
-            return output + "Die Zahl " + number + " an der Stelle " + column + ";" + row +
+            return feedback + "Die Zahl " + number + " an der Stelle " + column + ";" + row +
                     " ist richtig und hatte noch folgende weitere Möglichkeiten: " + numbers + ".";
         }
     }
 
-    public static String newNumberNotAllowed(int number, int column, int row, List<Integer> numbers, String output) {
+    public static String newNumberNotAllowed(int number, int column, int row, List<Integer> numbers, String feedback) {
         row++;
         column++;
-        if (!output.isEmpty()) {
-            output += "\n";
+        if (!feedback.isEmpty()) {
+            feedback += "\n";
         }
         if (numbers.isEmpty()) {
-            return output + "Die Zahl " + number + " ist an der Stelle " + column + ";" + row
+            return feedback + "Die Zahl " + number + " ist an der Stelle " + column + ";" + row
                     + " nicht erlaubt " +
                     "und aktuell gibt es keine anderen möglichen Zahlen an dieser Stelle." +
                     " Die alte Zahl wurde wieder eingesetzt.";
         } else {
-            return output + "Die Zahl " + number + " an der Stelle " + column + ";" + row + " nicht erlaubt " +
+            return feedback + "Die Zahl " + number + " an der Stelle " + column + ";" + row + " nicht erlaubt " +
                     "und aktuelle möglichen Zahlen an dieser Stelle sind: " + numbers;
         }
     }
 
-    public static String setDistinct(int number, int column, int row, String output) {
+    public static String setDistinct(int number, int column, int row, String feedback) {
         row++;
         column++;
-        if (!output.isEmpty()) {
-            output += "\n";
+        if (!feedback.isEmpty()) {
+            feedback += "\n";
         }
-        return output + "An der Stelle " + column + ";" + row + " ist nur die " + number + " möglich.";
+        return feedback + "An der Stelle " + column + ";" + row + " ist nur die " + number + " möglich.";
     }
 
-    public static String removeNumber(int number, int column, int row, String output) {
+    public static String removeNumber(int number, int column, int row, String feedback) {
         row++;
         column++;
-        if (!output.isEmpty()) {
-            output += "\n";
+        if (!feedback.isEmpty()) {
+            feedback += "\n";
         }
-        return output + "Die Zahl " + number + " an der Stelle " + column + ";" + row +
+        return feedback + "Die Zahl " + number + " an der Stelle " + column + ";" + row +
                 " wurde entfernt.";
     }
 
@@ -124,11 +124,11 @@ public class OutputMessages {
         }
     }
 
-    public static String builder(String output, String newOutput) {
-        if (output.isEmpty()) {
-            return newOutput;
+    public static String builder(String feedback, String newfeedback) {
+        if (feedback.isEmpty()) {
+            return newfeedback;
         } else {
-            return output + "\n" + newOutput;
+            return feedback + "\n" + newfeedback;
         }
     }
 }

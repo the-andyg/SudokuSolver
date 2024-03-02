@@ -1,6 +1,6 @@
 package com.model;
 
-import com.Data.OutputMessages;
+import com.Data.Feedback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,18 +10,18 @@ public class Grid {
     private final int gridSize;
     private boolean solveAble;
     private final boolean[][] startingSudoku;
-    private String outputMessage;
+    private String feedback;
 
     public Grid(int[][] grid, int gridSize) {
         this.grid = grid;
         this.gridSize = gridSize;
         startingSudoku = new boolean[gridSize][gridSize];
-        outputMessage = "";
+        feedback = "";
         checkInputs(true);
     }
 
-    public String getOutputMessage() {
-        return outputMessage;
+    public String getFeedback() {
+        return feedback;
     }
 
     public boolean isSolveAble() {
@@ -111,22 +111,22 @@ public class Grid {
 
     public void checkInputs(boolean newGrid) {
         boolean hasNumber = false;
-        outputMessage = "";
+        feedback = "";
         solveAble = false;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 //
                 if (!checkColumn(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
-                    outputMessage = OutputMessages.numberNotAllowedInColumn(grid[i][j], i, j);
+                    feedback = Feedback.numberNotAllowedInColumn(grid[i][j], i, j);
                     return;
                 } else if (!checkRow(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
-                    outputMessage = OutputMessages.numberNotAllowedInRow(grid[i][j], i, j);
+                    feedback = Feedback.numberNotAllowedInRow(grid[i][j], i, j);
                     return;
                 } else if (!checkBlock(grid[i][j], i, j) && grid[i][j] != 0) {
                     solveAble = false;
-                    outputMessage = OutputMessages.numberNotAllowedInBlock(grid[i][j], i, j);
+                    feedback = Feedback.numberNotAllowedInBlock(grid[i][j], i, j);
                     return;
                 }
                 if (grid[i][j] != 0 && newGrid) {
@@ -137,7 +137,7 @@ public class Grid {
         }
         // input has no number
         if (!hasNumber && newGrid) {
-            outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
+            feedback = Feedback.CHOOSE_AN_EXAMPLE;
             solveAble = false;
         } else {
             solveAble = true;
@@ -148,15 +148,15 @@ public class Grid {
         solveAble = false;
         if (!checkColumn(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInColumn(grid[column][row], column, row);
+            feedback = Feedback.numberNotAllowedInColumn(grid[column][row], column, row);
             return false;
         } else if (!checkRow(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInRow(grid[column][row], column, row);
+            feedback = Feedback.numberNotAllowedInRow(grid[column][row], column, row);
             return false;
         } else if (!checkBlock(grid[column][row], column, row) && grid[column][row] != 0) {
             solveAble = false;
-            outputMessage = OutputMessages.numberNotAllowedInBlock(grid[column][row], column, row);
+            feedback = Feedback.numberNotAllowedInBlock(grid[column][row], column, row);
             return false;
         }
         if (grid[column][row] != 0) {
@@ -165,7 +165,7 @@ public class Grid {
         }
         // input has no number
         if (!solveAble) {
-            outputMessage = OutputMessages.CHOOSE_AN_EXAMPLE;
+            feedback = Feedback.CHOOSE_AN_EXAMPLE;
             return false;
         }
         return true;

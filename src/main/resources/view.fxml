@@ -29,7 +29,7 @@
                             </HBox>
                             <GridPane fx:id="gridPaneDecimal" alignment="CENTER" minHeight="490" minWidth="490"
                                       prefHeight="3000"/>
-                            <Label fx:id="outputDecimal" alignment="CENTER" prefWidth="Infinity" wrapText="true"/>
+                            <Label fx:id="labelDecimal" alignment="CENTER" prefWidth="Infinity" wrapText="true"/>
                             <HBox alignment="CENTER">
                                 <padding>
                                     <Insets top="30"/>
@@ -60,7 +60,7 @@
                             </HBox>
                             <GridPane fx:id="gridPaneHex" alignment="CENTER" minHeight="830" minWidth="830"
                                       prefHeight="3000.0"/>
-                            <Label fx:id="outputHex" alignment="CENTER" prefWidth="Infinity"/>
+                            <Label fx:id="labelHex" alignment="CENTER" prefWidth="Infinity"/>
                             <HBox alignment="CENTER">
                                 <padding>
                                     <Insets top="30"/>
