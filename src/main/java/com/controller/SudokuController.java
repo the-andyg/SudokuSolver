@@ -56,7 +56,8 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     *
+     * Initializes the decimal grid by generating the Sudoku layout,
+     * creating a SudokuSolver instance, and setting up buttons.
      */
     private void initGridDecimal() {
         generateSudokuLayout(gridPaneDecimal, SIZE_DECIMAL);
@@ -66,7 +67,8 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     *
+     * Initializes the hex grid by generating the Sudoku layout,
+     * creating a SudokuSolver instance, and setting up buttons.
      */
     private void initGridHex() {
         generateSudokuLayout(gridPaneHex, SIZE_HEX);
@@ -85,7 +87,8 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     *
+     * Initializes the combo boxes with feedback options.
+     * Sets the default value to "Own Sudoku".
      */
     private void initComboBoxes() {
         ObservableList<String> options = FXCollections.observableArrayList();
@@ -99,6 +102,10 @@ public class SudokuController implements Initializable {
         comboBoxHex.setValue(Feedback.OWN_SUDOKU);
     }
 
+    /**
+     * Sets the decimal grid with an example Sudoku based on the selected feedback option.
+     * If "Own Sudoku" is selected, prompts the user to input their own Sudoku.
+     */
     @FXML
     public void setSudokuExampleDecimal() {
         switch (comboBoxDecimal.getValue()) {
@@ -109,6 +116,10 @@ public class SudokuController implements Initializable {
         }
     }
 
+    /**
+     * Sets the hex grid with an example Sudoku based on the selected feedback option.
+     * If "Own Sudoku" is selected, prompts the user to input their own Sudoku.
+     */
     @FXML
     public void setSudokuExampleHex() {
         switch (comboBoxHex.getValue()) {
@@ -119,6 +130,11 @@ public class SudokuController implements Initializable {
         }
     }
 
+    /**
+     * Checks the validity of the user-provided decimal Sudoku grid.
+     * If the input grid is invalid, displays a failure message.
+     * Otherwise, passes the grid to the Sudoku solver for validation.
+     */
     private void checkOwnSudokuDecimal() {
         int[][] newInput = getGrid(gridPaneDecimal, SIZE_DECIMAL);
         if (newInput == null) {
@@ -128,6 +144,11 @@ public class SudokuController implements Initializable {
         sudokuSolverDecimal.checkNewGrid(newInput);
     }
 
+    /**
+     * Checks the validity of the user-provided hexadecimal Sudoku grid.
+     * If the input grid is invalid, displays a failure message.
+     * Otherwise, passes the grid to the Sudoku solver for validation.
+     */
     private void checkOwnSudokuHex() {
         int[][] newInput = getGrid(gridPaneHex, SIZE_HEX);
         if (newInput == null) {
@@ -137,6 +158,11 @@ public class SudokuController implements Initializable {
         sudokuSolverHex.checkNewGrid(newInput);
     }
 
+    /**
+     * Retrieves the decimal Sudoku grid from the UI and checks its validity.
+     * If the input grid is invalid, displays a failure message.
+     * Otherwise, passes the grid to the Sudoku solver for validation.
+     */
     @FXML
     public void getAndCheckGridDecimal() {
         int[][] sudoku = getGrid(gridPaneDecimal, SIZE_DECIMAL);
@@ -147,6 +173,11 @@ public class SudokuController implements Initializable {
         sudokuSolverDecimal.checkNewNumbers(sudoku);
     }
 
+    /**
+     * Retrieves the hexadecimal Sudoku grid from the UI and checks its validity.
+     * If the input grid is invalid, displays a failure message.
+     * Otherwise, passes the grid to the Sudoku solver for validation.
+     */
     @FXML
     public void getAndCheckGridHex() {
         int[][] sudoku = getGrid(gridPaneHex, SIZE_HEX);
@@ -167,6 +198,10 @@ public class SudokuController implements Initializable {
         sudokuSolverHex.checkNewGrid(grid);
     }
 
+    /**
+     * Clears the Sudoku grid for the decimal Sudoku variant.
+     * Resets buttons and sets the combobox value to "Own Sudoku".
+     */
     @FXML
     public void clearSudokuDecimal() {
         sudokuSolverDecimal.clearSudoku();
@@ -174,6 +209,10 @@ public class SudokuController implements Initializable {
         comboBoxDecimal.setValue(Feedback.OWN_SUDOKU);
     }
 
+    /**
+     * Clears the Sudoku grid for the hex Sudoku variant.
+     * Resets buttons and sets the combobox value to "Own Sudoku".
+     */
     @FXML
     public void clearSudokuHex() {
         sudokuSolverHex.clearSudoku();
@@ -192,8 +231,10 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param grid
-     * @param size
+     * Generates the layout of a Sudoku grid within a JavaFX GridPane, consisting of TextFields for input.
+     *
+     * @param grid The JavaFX GridPane where the Sudoku grid layout will be generated.
+     * @param size The size of the Sudoku grid (number of rows/columns).
      */
     private void generateSudokuLayout(GridPane grid, int size) {
         for (int i = 0; i < size; i++) {
@@ -206,9 +247,12 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param grid
-     * @param size
-     * @return
+     * Extracts the current state of the Sudoku grid from a JavaFX GridPane and returns it as a 2D integer array.
+     *
+     * @param grid The JavaFX GridPane containing the Sudoku grid.
+     * @param size The size of the Sudoku grid (either SIZE_DECIMAL or SIZE_HEX).
+     * @return A 2D integer array representing the current state of the Sudoku grid, where 0 indicates an empty cell.
+     *         Returns null if the input contains invalid or incomplete Sudoku grid data.
      */
     private int[][] getGrid(GridPane grid, int size) {
         int[][] result = new int[size][size];
@@ -240,9 +284,12 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param grid
-     * @param sudokuSolver
-     * @param gridSudoku
+     * Updates the appearance and content of a JavaFX GridPane
+     * based on the current state of the Sudoku grid.
+     *
+     * @param grid         The JavaFX GridPane to be updated.
+     * @param sudokuSolver The SudokuSolver object containing the current state of the Sudoku grid.
+     * @param gridSudoku   The Grid object representing the Sudoku grid.
      */
     private void updateGrid(GridPane grid, SudokuSolver sudokuSolver, Grid gridSudoku) {
         boolean[][] newCells = sudokuSolver.getNewCells();
@@ -287,10 +334,13 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param t
-     * @param row
-     * @param column
-     * @param size
+     * Sets the background color of a JavaFX TextField based on the position
+     * of the cell in the Sudoku grid.
+     *
+     * @param t      The JavaFX TextField to be updated.
+     * @param row    The row index of the cell.
+     * @param column The column index of the cell.
+     * @param size   The size of the Sudoku grid (e.g., 9 for a standard 9x9 grid).
      */
     private void setTextFieldColor(TextField t, int row, int column, int size) {
         int blockSize = (int) Math.sqrt(size);
@@ -305,9 +355,12 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param label
-     * @param solver
-     * @param output
+     * Sets the text and style of a JavaFX label based on the output message
+     * and the number of lines in the Sudoku solver's solution.
+     *
+     * @param label  The JavaFX label to be updated.
+     * @param solver The SudokuSolver object containing the solution data.
+     * @param output The output message to be displayed on the label.
      */
     private void setLabel(Label label, SudokuSolver solver, String output) {
         if (solver != null) {
@@ -320,9 +373,15 @@ public class SudokuController implements Initializable {
     }
 
     /**
-     * @param size
-     * @param output
-     * @param grid
+     * Updates the user interface based on the size of the Sudoku puzzle,
+     * the output message, the current state of the grid, and the solvability status.
+     *
+     * @param size       An integer representing the size of the Sudoku puzzle.
+     *                   It can be either SIZE_DECIMAL or SIZE_HEX.
+     * @param output     A string containing the output message to display to the user.
+     * @param grid       An instance of the Grid class representing the current state of the Sudoku grid.
+     * @param isSolvable A boolean indicating whether the Sudoku puzzle is solvable.
+     *                   If true, buttons are disabled; otherwise, they remain enabled.
      */
     public void update(int size, String output, Grid grid, boolean isSolvable) {
         switch (size) {
@@ -344,6 +403,14 @@ public class SudokuController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the buttons related to hexadecimal Sudoku solving based on the solvability status.
+     * If the Sudoku is solvable, the "Next Number", "Solve", and "Set" buttons are disabled;
+     * otherwise, they remain enabled to allow user interaction.
+     *
+     * @param isSolvable A boolean indicating whether the Sudoku puzzle is solvable.
+     *                   If true, buttons are disabled; otherwise, they remain enabled.
+     */
     private void setUpButtonDecimal(boolean isSolvable) {
         if (nextNumberDecimal != null) {
             nextNumberDecimal.setDisable(isSolvable);
@@ -356,6 +423,14 @@ public class SudokuController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the buttons related to hexadecimal Sudoku solving based on the solvability status.
+     * If the Sudoku is solvable, the "Next Number", "Solve", and "Set" buttons are disabled;
+     * otherwise, they remain enabled to allow user interaction.
+     *
+     * @param isSolvable A boolean indicating whether the Sudoku puzzle is solvable.
+     *                   If true, buttons are disabled; otherwise, they remain enabled.
+     */
     private void setUpButtonHex(boolean isSolvable) {
         if (nextNumberHex != null) {
             nextNumberHex.setDisable(isSolvable);

@@ -12,7 +12,7 @@ public class SudokuSolver {
     private Grid grid;
     private final HashMap<Integer, List<Cell>> mapOfCells;
     private final List<Cell> solvedCells;
-    private boolean hasSolucion;
+    private boolean hasSolution;
     private int cellsSearching;
     // logic
     // Feedback
@@ -30,14 +30,14 @@ public class SudokuSolver {
         this.sudokuController = sudokuController;
         mapOfCells = new HashMap<>();
         solvedCells = new ArrayList<>();
-        hasSolucion = true;
+        hasSolution = true;
         createMap();
         setupFeedbackElements();
         checkGrid();
     }
 
     private void update() {
-        sudokuController.update(grid.getGridSize(), feedback, grid, !grid.isSolveAble());
+        sudokuController.update(grid.getGridSize(), feedback, grid, !grid.isSolvable());
     }
 
     public int getNumberOfLines() {
@@ -64,9 +64,15 @@ public class SudokuSolver {
         return temporaryCells;
     }
 
+    /**
+     * Checks the validity of the current Sudoku grid inputs and updates the feedback accordingly.
+     * If the grid is not solvable, sets the feedback to indicate initialization text;
+     * otherwise, sets it to indicate set text.
+     * Finally, updates the user interface based on the new feedback.
+     */
     private void checkGrid() {
         grid.checkInputs(true);
-        if (!grid.isSolveAble()) {
+        if (!grid.isSolvable()) {
             feedback = Feedback.INIT_TEXT;
         } else {
             feedback = Feedback.SET_TEXT;
@@ -74,11 +80,22 @@ public class SudokuSolver {
         update();
     }
 
+    /**
+     * Checks the validity of a new Sudoku grid provided as input.
+     * Clears the current Sudoku grid and sets up the feedback elements.
+     * Creates a new grid based on the input and checks if it is solvable.
+     * If solvable, sets up the feedback elements, updates the feedback to indicate set text,
+     * updates the current grid to the new one, and creates a map.
+     * If not solvable, updates the feedback based on the grid's feedback and updates the current grid.
+     * Finally, updates the user interface based on the new feedback.
+     *
+     * @param newGrid The new Sudoku grid to be checked.
+     */
     public void checkNewGrid(int[][] newGrid) {
-        grid.clearSudoku();
+        clearSudoku();
         setupFeedbackElements();
         Grid grid = new Grid(newGrid, this.grid.getGridSize());
-        if (grid.isSolveAble()) {
+        if (grid.isSolvable()) {
             setupFeedbackElements();
             feedback = Feedback.SET_TEXT;
             this.grid = grid;
@@ -90,14 +107,26 @@ public class SudokuSolver {
         update();
     }
 
+    /**
+     * Clears the current Sudoku grid.
+     * Clears the Sudoku grid, creates a new map, sets up the feedback elements,
+     * updates the feedback to indicate that the Sudoku has been cleared,
+     * and updates the user interface.
+     */
     public void clearSudoku() {
         grid.clearSudoku();
+        hasSolution = true;
         createMap();
         setupFeedbackElements();
         feedback = Feedback.CLEAR_SUDOKU;
         update();
     }
 
+    /**
+     * Solves the Sudoku puzzle.
+     * Continuously calls the nextNumber method until the puzzle is solved.
+     * After solving the puzzle, it updates the user interface.
+     */
     public void solveSudoku() {
         while (isNotDone()) {
             nextNumber(true);
@@ -107,7 +136,15 @@ public class SudokuSolver {
     }
 
     /**
+     * Determines the next number to be placed in the Sudoku grid.
+     * If the backtracking algorithm is necessary, it performs backtracking.
+     * Checks if the Sudoku puzzle is solved or not solvable.
+     * Sets a distinct number if available in a cell.
+     * Checks if there is a distinct cell in a row, column, or block.
+     * Sets the next number in a cell with multiple possibilities.
+     * If the isLoop parameter is false, updates the user interface after each step.
      *
+     * @param isLoop a boolean indicating whether the method should be run in a loop
      */
     public void nextNumber(boolean isLoop) {
         setupFeedbackElements();
@@ -120,7 +157,7 @@ public class SudokuSolver {
         }
         // check if Sudoku is done
         if (!isNotDone()) {
-            if (!hasSolucion) {
+            if (!hasSolution) {
                 feedback = Feedback.SUDOKU_NOT_SOLVABLE;
             } else {
                 feedback = Feedback.SUDOKU_SOLVED;
@@ -151,6 +188,18 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Checks the validity of new numbers inputted by the user and updates the Sudoku grid accordingly.
+     * Sorts the map of available numbers.
+     * Sets up feedback elements for the user interface.
+     * Creates a new grid with the inputted numbers.
+     * Iterates over each cell in the grid to compare the inputted numbers with the existing ones.
+     * If a cell had a number previously and it's different from the new input, deletes or changes the number accordingly.
+     * If it's a new number, checks if it's valid and updates the grid with the new number.
+     * Updates the user interface with the changes.
+     *
+     * @param numbers a 2D array representing the new numbers inputted by the user
+     */
     public void checkNewNumbers(int[][] numbers) {
         sortMap();
         setupFeedbackElements();
@@ -178,6 +227,19 @@ public class SudokuSolver {
         update();
     }
 
+    /**
+     * Sets a new number in the Sudoku grid and updates the corresponding data structures.
+     * Marks the cell containing the new number as a newly filled cell.
+     * Iterates through the map of cells and removes the cell containing the new number.
+     * Updates the possible numbers for the removed cell based on the newly filled number.
+     * Sets the new number in the grid and marks the cell as solved.
+     * Adds the solved cell to the list of solved cells.
+     * Updates the user interface with the valid number placement and additional options feedback.
+     *
+     * @param column    the column index of the cell containing the new number
+     * @param row       the row index of the cell containing the new number
+     * @param newNumber the new number to be set in the Sudoku grid
+     */
     private void setNewNumber(int column, int row, int newNumber) {
         newCells[column][row] = true;
         for (int x = 1; x <= grid.getGridSize(); x++) {
@@ -203,6 +265,15 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Checks for cells in the Sudoku grid that have unique numbers within their block, row, or column.
+     * Iterates through the map of cells to find each cell.
+     * For each cell, checks for a distinct number within its block, row, or column.
+     * If a distinct number is found, sets the number in the grid, clears the possible numbers for the cell,
+     * removes the cell from the map of cells, adds the cell to the list of solved cells, and marks the cell as newly filled.
+     *
+     * @return true if a distinct number is found and set in the grid, false otherwise
+     */
     private boolean checkBlockRowColumn() {
         for (int x = 1; x <= grid.getGridSize(); x++) {
             if (!mapOfCells.get(x).isEmpty()) {
@@ -233,6 +304,17 @@ public class SudokuSolver {
         return false;
     }
 
+    /**
+     * Checks for a distinct number within the block of the specified cell.
+     * Iterates through the map of cells to find cells within the same block as the specified cell.
+     * For each cell within the block, updates the indexCells array to mark the cell's position.
+     * Updates the blockNumbers array based on the possible numbers of each cell within the block.
+     * Counts the remaining possible numbers within the block.
+     * If only one possible number remains, sets the number as the distinct number in the block and returns it.
+     *
+     * @param cell The cell for which to check the block
+     * @return The distinct number found in the block, or 0 if no distinct number is found
+     */
     private int checkBlockNumber(Cell cell) {
         indexCells = new boolean[grid.getGridSize()][grid.getGridSize()];
 
@@ -280,6 +362,17 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Checks for a distinct number within the row of the specified cell.
+     * Iterates through the map of cells to find cells within the same row as the specified cell.
+     * For each cell within the row, updates the indexCells array to mark the cell's position.
+     * Updates the rowNumbers array based on the possible numbers of each cell within the row.
+     * Counts the remaining possible numbers within the row.
+     * If only one possible number remains, sets the number as the distinct number in the row and returns it.
+     *
+     * @param cell The cell for which to check the row
+     * @return The distinct number found in the row, or 0 if no distinct number is found
+     */
     private int checkRowNumber(Cell cell) {
         indexCells = new boolean[grid.getGridSize()][grid.getGridSize()];
 
@@ -322,6 +415,17 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Checks for a distinct number within the column of the specified cell.
+     * Iterates through the map of cells to find cells within the same column as the specified cell.
+     * For each cell within the column, updates the indexCells array to mark the cell's position.
+     * Updates the blockNumbers array based on the possible numbers of each cell within the column.
+     * Counts the remaining possible numbers within the column.
+     * If only one possible number remains, sets the number as the distinct number in the column and returns it.
+     *
+     * @param cell The cell for which to check the column
+     * @return The distinct number found in the column, or 0 if no distinct number is found
+     */
     private int checkColumnNumber(Cell cell) {
         indexCells = new boolean[grid.getGridSize()][grid.getGridSize()];
         boolean[] blockNumbers = new boolean[grid.getGridSize() + 1];
@@ -357,6 +461,16 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Sets a distinct number for cells with only one remaining possible number.
+     * Iterates through the map of cells to find cells with only one possible number.
+     * For each cell found, sets the cell's remaining possible number as the distinct number.
+     * Updates the grid with the distinct number, marks the cell as solved, and adds it to the solvedCells list.
+     * Increments the numberOfLines counter and updates the feedback message.
+     * Returns true if at least one distinct number is set, otherwise returns false.
+     *
+     * @return True if a distinct number is set for at least one cell, otherwise false
+     */
     private boolean setDistinctNumber() {
         if (!mapOfCells.get(1).isEmpty()) {
             while (!mapOfCells.get(1).isEmpty()) {
@@ -375,7 +489,11 @@ public class SudokuSolver {
     }
 
     /**
-     *
+     * Sets the next number for cells with multiple possible numbers.
+     * Iterates through the map of cells starting from cells with two possible numbers.
+     * For the first cell found, sets its next possible number as the number to be filled in the grid.
+     * Marks the cell as solved, updates the grid with the next number, and updates feedback accordingly.
+     * Stops iterating after setting the next number for the first cell found.
      */
     private void setNextNumber() {
         indexCells = new boolean[grid.getGridSize()][grid.getGridSize()];
@@ -393,7 +511,11 @@ public class SudokuSolver {
     }
 
     /**
-     *
+     * Performs backtracking to resolve conflicts when a dead end is reached during Sudoku solving.
+     * Removes cells with no possible numbers until a cell with a different possible number is found.
+     * Resets the cell's possible numbers, updates the grid with the next number, and marks it as removed.
+     * If the solvedCells list becomes empty, indicates that the Sudoku is not solvable.
+     * Updates feedback accordingly to indicate backtracking.
      */
     private void backTracking() {
         newCells = new boolean[grid.getGridSize()][grid.getGridSize()];
@@ -408,7 +530,7 @@ public class SudokuSolver {
             removedCells[cell.getColumn()][cell.getRow()] = true;
             if (solvedCells.isEmpty()) {
                 // not solvable
-                hasSolucion = false;
+                hasSolution = false;
                 cellsSearching = 0;
                 return;
             }
@@ -424,9 +546,15 @@ public class SudokuSolver {
     }
 
     /**
-     * @param newNumber
-     * @param column
-     * @param row
+     * Deletes or changes a number in the Sudoku grid at the specified column and row.
+     * If the new number is 0, deletes the old number from the grid.
+     * If the new number is valid, changes the old number to the new number.
+     * Updates the grid, possible numbers for the cell, and feedback accordingly.
+     *
+     * @param newNumber The new number to be placed in the grid.
+     * @param column    The column index of the cell in the grid.
+     * @param row       The row index of the cell in the grid.
+     * @param newGrid   The new Sudoku grid used for validation.
      */
     private void deleteOrChangeNumber(int newNumber, int column, int row, Grid newGrid) {
         boolean cellFound = false;
@@ -471,7 +599,13 @@ public class SudokuSolver {
     }
 
     /**
+     * Sorts the map of cells based on the number of possible numbers each cell has.
+     * It reduces the possible numbers for each cell and checks if backtracking is necessary.
+     * If a cell has no possible numbers, backtracking is initiated.
+     * If the number of possible numbers for a cell changes, it is moved to the corresponding list in the map.
+     * If a cell becomes a distinct cell with only one possible number, sorting is stopped.
      *
+     * @return True if backtracking is necessary, false otherwise.
      */
     private boolean sortMap() {
         Cell cell;
@@ -506,7 +640,12 @@ public class SudokuSolver {
     }
 
     /**
-     *
+     * Creates a map of cells based on the number of possible numbers each empty cell has.
+     * It clears the list of solved cells and initializes the count of cells searching.
+     * It initializes a map where the keys represent the number of possible numbers and the values are lists of cells.
+     * For each empty cell in the grid, it calculates the possible numbers, creates a cell object
+     * and adds it to the corresponding list in the map.
+     * It also updates the count of cells searching.
      */
     private void createMap() {
         solvedCells.clear();
@@ -527,7 +666,9 @@ public class SudokuSolver {
     }
 
     /**
-     *
+     * Initializes or resets various feedback-related elements.
+     * It resets the number of lines in the feedback, clears the feedback message,
+     * and initializes or resets arrays used for tracking new cells, removed cells, index cells, and temporary cells.
      */
     private void setupFeedbackElements() {
         numberOfLines = 0;

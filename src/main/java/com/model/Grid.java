@@ -8,7 +8,7 @@ import java.util.List;
 public class Grid {
     private final int[][] grid;
     private final int gridSize;
-    private boolean solveAble;
+    private boolean solvable;
     private final boolean[][] startingSudoku;
     private String feedback;
 
@@ -24,8 +24,8 @@ public class Grid {
         return feedback;
     }
 
-    public boolean isSolveAble() {
-        return solveAble;
+    public boolean isSolvable() {
+        return solvable;
     }
 
     public boolean[][] getStartingSudoku() {
@@ -44,6 +44,11 @@ public class Grid {
         return gridSize;
     }
 
+    /**
+     * Clears the sudoku grid by setting all cell values to 0 and marking all cells as non-starting cells.
+     * It iterates through each cell in the grid and sets its value to 0, indicating an empty cell,
+     * and marks it as a non-starting cell by setting the corresponding flag in the startingSudoku array to false.
+     */
     public void clearSudoku() {
         for (int x = 0; x < gridSize; x++) {
             for (int y = 0; y < gridSize; y++) {
@@ -89,6 +94,13 @@ public class Grid {
         return true;
     }
 
+    /**
+     * Retrieves the list of possible numbers that can be placed in the specified cell without violating Sudoku rules.
+     *
+     * @param column Column index of the cell.
+     * @param row    Row index of the cell.
+     * @return List of valid numbers for the cell.
+     */
     public List<Integer> getPossibleNumbers(int column, int row) {
         List<Integer> possibleNumbers = new ArrayList<>();
         for (int i = 1; i <= gridSize; i++) {
@@ -99,6 +111,15 @@ public class Grid {
         return possibleNumbers;
     }
 
+    /**
+     * Retrieves the list of possible numbers that can be placed in the specified cell based on the current state
+     * of the Sudoku grid, excluding numbers that would violate Sudoku rules for the given column and row.
+     *
+     * @param numbers List of numbers to filter for validity.
+     * @param column  Column index of the cell.
+     * @param row     Row index of the cell.
+     * @return List of valid numbers for the cell.
+     */
     public List<Integer> getNewPossibleNumbers(List<Integer> numbers, int column, int row) {
         List<Integer> result = new ArrayList<>();
         for (int number : numbers) {
@@ -109,23 +130,30 @@ public class Grid {
         return result;
     }
 
+    /**
+     * Checks if the current state of the Sudoku grid satisfies the Sudoku rules for columns, rows, and blocks.
+     * If a number violates any constraint, it updates feedback accordingly and sets solveAble to false.
+     * If the grid has no numbers and is new, it prompts the user to choose an example Sudoku.
+     *
+     * @param newGrid Flag indicating whether the grid is new.
+     */
     public void checkInputs(boolean newGrid) {
         boolean hasNumber = false;
         feedback = "";
-        solveAble = false;
+        solvable = false;
         for (int i = 0; i < gridSize; i++) {
             for (int j = 0; j < gridSize; j++) {
                 //
                 if (!checkColumn(grid[i][j], i, j) && grid[i][j] != 0) {
-                    solveAble = false;
+                    solvable = false;
                     feedback = Feedback.numberNotAllowedInColumn(grid[i][j], i, j);
                     return;
                 } else if (!checkRow(grid[i][j], i, j) && grid[i][j] != 0) {
-                    solveAble = false;
+                    solvable = false;
                     feedback = Feedback.numberNotAllowedInRow(grid[i][j], i, j);
                     return;
                 } else if (!checkBlock(grid[i][j], i, j) && grid[i][j] != 0) {
-                    solveAble = false;
+                    solvable = false;
                     feedback = Feedback.numberNotAllowedInBlock(grid[i][j], i, j);
                     return;
                 }
@@ -138,33 +166,42 @@ public class Grid {
         // input has no number
         if (!hasNumber && newGrid) {
             feedback = Feedback.CHOOSE_AN_EXAMPLE;
-            solveAble = false;
+            solvable = false;
         } else {
-            solveAble = true;
+            solvable = true;
         }
     }
 
+    /**
+     * Checks if placing a number at the specified column and row in the grid is valid according to Sudoku rules.
+     * It verifies column, row, and block constraints. If the number violates any constraint, it updates feedback
+     * and returns false. If the cell is empty, it prompts the user to choose an example Sudoku.
+     *
+     * @param column The column index.
+     * @param row    The row index.
+     * @return true if the placement is valid, false otherwise.
+     */
     public boolean checkInput(int column, int row) {
-        solveAble = false;
+        solvable = false;
         if (!checkColumn(grid[column][row], column, row) && grid[column][row] != 0) {
-            solveAble = false;
+            solvable = false;
             feedback = Feedback.numberNotAllowedInColumn(grid[column][row], column, row);
             return false;
         } else if (!checkRow(grid[column][row], column, row) && grid[column][row] != 0) {
-            solveAble = false;
+            solvable = false;
             feedback = Feedback.numberNotAllowedInRow(grid[column][row], column, row);
             return false;
         } else if (!checkBlock(grid[column][row], column, row) && grid[column][row] != 0) {
-            solveAble = false;
+            solvable = false;
             feedback = Feedback.numberNotAllowedInBlock(grid[column][row], column, row);
             return false;
         }
         if (grid[column][row] != 0) {
             startingSudoku[column][row] = true;
-            solveAble = true;
+            solvable = true;
         }
         // input has no number
-        if (!solveAble) {
+        if (!solvable) {
             feedback = Feedback.CHOOSE_AN_EXAMPLE;
             return false;
         }

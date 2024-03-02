@@ -22,7 +22,7 @@ public class TestSudokuSolver {
         };
 
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public class TestSudokuSolver {
         };
 
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -83,7 +83,7 @@ public class TestSudokuSolver {
                 {8, 0, 7, 0, 0, 0, 0, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -113,7 +113,7 @@ public class TestSudokuSolver {
                 {0, 0, 6, 0, 0, 0, 0, 0, 8}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -143,7 +143,7 @@ public class TestSudokuSolver {
                 {0, 3, 0, 0, 4, 0, 0, 2, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -173,7 +173,7 @@ public class TestSudokuSolver {
                 {0, 1, 0, 0, 8, 0, 9, 4, 5}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -203,7 +203,7 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 2, 0, 8, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -233,7 +233,7 @@ public class TestSudokuSolver {
                 {2, 7, 8, 0, 0, 0, 0, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -270,7 +270,7 @@ public class TestSudokuSolver {
                 {0, 13, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 11, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -307,7 +307,7 @@ public class TestSudokuSolver {
                 {0, 13, 0, 0, 3, 0, 0, 0, 0, 0, 8, 0, 0, 0, 11, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -344,7 +344,7 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 0, 8, 0, 0, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 16);
-        assertTrue(grid.isSolveAble());
+        assertTrue(grid.isSolvable());
         SudokuSolver solver = new SudokuSolver(grid, new SudokuController());
         int count = 0;
         final long timeStart = System.currentTimeMillis();
@@ -374,7 +374,7 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertFalse(grid.isSolveAble());
+        assertFalse(grid.isSolvable());
     }
 
     @Test
@@ -391,6 +391,6 @@ public class TestSudokuSolver {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0}
         };
         Grid grid = new Grid(unsolvedSudoku, 9);
-        assertFalse(grid.isSolveAble());
+        assertFalse(grid.isSolvable());
     }
 }

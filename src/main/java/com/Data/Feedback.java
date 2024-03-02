@@ -7,7 +7,7 @@ public class Feedback {
     public static final String SET_TEXT = "Klicke auf \"nächste Zahl\" um den Algorithmus zu starten" +
             " oder gebe Zahlen in das Sudoku ein und Bestätige diese.";
     public static final String FAIL_TEXT_DECIMAL = "Bitte gebe nur Zahlen von 1 - 9 ein.";
-    public static final String FAIL_TEXT_HEX = "Bitte gebe nur Zahlen von 1 - 9 ein.";
+    public static final String FAIL_TEXT_HEX = "Bitte gebe nur Zahlen von 1 - 16 ein.";
     public static final String EASY = "Einfaches Sudoku";
     public static final String MEDIUM = "Schweres Sudoku";
     public static final String HARD = "Sehr schweres Sudoku";
@@ -98,13 +98,13 @@ public class Feedback {
 
     public static String setRow(int number, int row) {
         row++;
-        return "In der " + row + ". Reihe kann die" + number +
+        return "In der " + row + ". Reihe kann die " + number +
                 " nur in die grüne Zelle eingesetzt werden und nicht in das gelbe Zelle / die gelben Zellen.";
     }
 
     public static String setColumn(int number, int column) {
         column++;
-        return "In der " + column + ". Spalte kann die" + number +
+        return "In der " + column + ". Spalte kann die " + number +
                 " nur in die grüne Zelle eingesetzt werden und nicht in das gelbe Zelle / die gelben Zellen.";
     }
 
