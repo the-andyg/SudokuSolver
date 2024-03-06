@@ -128,8 +128,14 @@ public class SudokuSolver {
      * After solving the puzzle, it updates the user interface.
      */
     public void solveSudoku() {
+        final long timeStart = System.currentTimeMillis();
         while (isNotDone()) {
             nextNumber(true);
+            if (System.currentTimeMillis() - timeStart > 3000) {
+                cellsSearching = solvedCells.size();
+                hasSolution = false;
+                break;
+            }
         }
         nextNumber(true);
         update();
